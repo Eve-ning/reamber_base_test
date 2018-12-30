@@ -31,6 +31,7 @@ public:
 		);
 
 		editor_hit_object_singular.load_parameters(1, 1000, 0, 4);
+
 		editor_hit_object_multiple[0].load_parameters(1, 1000, 0, 4);
 		editor_hit_object_multiple[1].load_parameters(2, 2000, 0, 4);
 
@@ -150,7 +151,19 @@ namespace reamber_base_test
 
 			Assert::IsTrue(tp_v == mocks.timing_point_multiple);
 		}
-		//TEST_METHOD(hit_object_v_editor_loading_test);
+		TEST_METHOD(hit_object_v_editor_loading_test) {
+			hit_object_v ho_v;
+			ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple, 4);
+
+			Log(ho_v[0].get_raw_hit_object().c_str());
+			Log(mocks.editor_hit_object_multiple[0].get_raw_hit_object().c_str());
+			
+
+			Log(ho_v[1].get_raw_hit_object().c_str());
+			Log(mocks.editor_hit_object_multiple[1].get_raw_hit_object().c_str());
+
+			Assert::IsTrue(ho_v == mocks.editor_hit_object_multiple);
+		}
 
 	};
 	//TEST_CLASS(lib_functions_test_class)
