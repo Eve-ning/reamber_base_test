@@ -167,72 +167,48 @@ namespace reamber_base_test
 		// LOBO: Last  Object By Offset
 		TEST_METHOD(lib_fobo_hit_object)
 		{
-			auto osu_obj_sptr = lib_functions::first_object_by_offset(
-				mocks.hit_object_multiple.get_obj_sptr_v()
-			);
-			
 			Assert::IsTrue(
 				mocks.hit_object_multiple[0] == // Expect the first object
-				*std::dynamic_pointer_cast<hit_object>(osu_obj_sptr)
+				mocks.hit_object_multiple.get_first_object_by_offset()
 			);
 		}
 		TEST_METHOD(lib_fobo_timing_point)
 		{
-			auto osu_obj_sptr = lib_functions::first_object_by_offset(
-				mocks.timing_point_multiple.get_obj_sptr_v()
-			);
-
 			Assert::IsTrue(
 				mocks.timing_point_multiple[0] == // Expect the first object
-				*std::dynamic_pointer_cast<timing_point>(osu_obj_sptr)
+				mocks.timing_point_multiple.get_first_object_by_offset()
 			);
 		}
 		TEST_METHOD(lib_lobo_hit_object)
 		{
-			auto osu_obj_sptr = lib_functions::last_object_by_offset(
-				mocks.hit_object_multiple.get_obj_sptr_v()
-			);
-
 			Assert::IsTrue(
 				mocks.hit_object_multiple[2] == // Expect the first object
-				*std::dynamic_pointer_cast<hit_object>(osu_obj_sptr)
+				mocks.hit_object_multiple.get_last_object_by_offset()
 			);
 		}
 		TEST_METHOD(lib_lobo_timing_point)
 		{
-			auto osu_obj_sptr = lib_functions::last_object_by_offset(
-				mocks.timing_point_multiple.get_obj_sptr_v()
-			);
-
 			Assert::IsTrue(
 				mocks.timing_point_multiple[2] == // Expect the first object
-				*std::dynamic_pointer_cast<timing_point>(osu_obj_sptr)
+				mocks.timing_point_multiple.get_last_object_by_offset()
 			);
 		}
 	
 		TEST_METHOD(lib_get_column_v) {
-			Assert::IsTrue(lib_functions::get_column_v(mocks.hit_object_multiple.get_object_v()) ==
+			Assert::IsTrue(mocks.hit_object_multiple.get_column_v() ==
 				std::vector<unsigned int>{0, 2, 3});
 		}
 		TEST_METHOD(lib_get_offset_min_hit_object) {
-			Assert::IsTrue(
-				lib_functions::get_offset_min(mocks.hit_object_multiple.get_obj_sptr_v()) ==
-				1000);
+			Assert::IsTrue(mocks.hit_object_multiple.get_offset_min() == 1000);
 		}
 		TEST_METHOD(lib_get_offset_max_hit_object) {
-			Assert::IsTrue(
-				lib_functions::get_offset_max(mocks.hit_object_multiple.get_obj_sptr_v()) ==
-				3000);
+			Assert::IsTrue(mocks.hit_object_multiple.get_offset_max() == 3000);
 		}
 		TEST_METHOD(lib_get_offset_min_timing_point) {
-			Assert::IsTrue(
-				lib_functions::get_offset_min(mocks.timing_point_multiple.get_obj_sptr_v()) ==
-				0);
+			Assert::IsTrue(mocks.timing_point_multiple.get_offset_min() == 0);
 		}
 		TEST_METHOD(lib_get_offset_max_timing_point) {
-			Assert::IsTrue(
-				lib_functions::get_offset_max(mocks.timing_point_multiple.get_obj_sptr_v()) ==
-				2000);
+			Assert::IsTrue(mocks.timing_point_multiple.get_offset_max() == 2000);
 		}
 
 		TEST_METHOD(lib_sort_by_offset_hit_object) {
@@ -245,13 +221,10 @@ namespace reamber_base_test
 			ho_v_sort_desc[2] = ho_v[0];
 
 			// Sort by Descending
-			std::vector<std::shared_ptr<osu_object>> ho_v_sptr = ho_v.get_obj_sptr_v();
-			lib_functions::sort_by_offset(ho_v_sptr, false);
-			ho_v.load_obj_sptr(ho_v_sptr);
+			ho_v.sort_by_offset(false);
 
 			Assert::IsTrue(ho_v == ho_v_sort_desc);
 		}
-
 		TEST_METHOD(lib_sort_by_offset_timing_point) {
 			timing_point_v tp_v = mocks.timing_point_multiple;
 
@@ -262,9 +235,7 @@ namespace reamber_base_test
 			tp_v_sort_desc[2] = tp_v[0];
 
 			// Sort by Descending
-			std::vector<std::shared_ptr<osu_object>> tp_v_sptr = tp_v.get_obj_sptr_v();
-			lib_functions::sort_by_offset(tp_v_sptr, false);
-			tp_v.load_obj_sptr(tp_v_sptr);
+			tp_v.sort_by_offset(false);
 
 			Assert::IsTrue(tp_v == tp_v_sort_desc);
 		}
