@@ -239,12 +239,24 @@ namespace reamber_base_test
 	TEST_CLASS(lib_functions_test_class)
 	{
 	public:
-		TEST_METHOD(get_offset_difference) {
+		TEST_METHOD(lib_get_offset_difference) {
 			auto offset_difference =
 				lib_functions::get_offset_difference<hit_object>(
 					std::make_shared<hit_object_v>(mocks.hit_object_multiple));
-			for (double offset : offset_difference) {
-				Log(std::to_string(offset).c_str());
+			Assert::IsTrue(offset_difference == std::vector<double>{1000, 1000});
+		}
+		TEST_METHOD(lib_create_copies_singular) {
+			auto copies = lib_functions::create_copies<hit_object>
+				(mocks.hit_object_note, std::vector<double>{1000, 2000});
+			for (auto ho : *copies) {
+				Log(ho.get_string_raw().c_str());
+			}
+		}
+		TEST_METHOD(lib_create_copies_multiple) {
+			auto copies = lib_functions::create_copies<hit_object>
+				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), std::vector<double>{1000, 2000});
+			for (hit_object ho : *copies) {
+				Log(ho.get_string_raw().c_str());
 			}
 		}
 
