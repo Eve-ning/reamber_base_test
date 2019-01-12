@@ -245,21 +245,35 @@ namespace reamber_base_test
 					std::make_shared<hit_object_v>(mocks.hit_object_multiple));
 			Assert::IsTrue(offset_difference == std::vector<double>{1000, 1000});
 		}
-		TEST_METHOD(lib_create_copies_singular) {
+		TEST_METHOD(lib_create_copies_singular_hit_object) {
 			auto copies = lib_functions::create_copies<hit_object>
 				(mocks.hit_object_note, std::vector<double>{1000, 2000});
+			Assert::IsTrue(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
+		}
+		TEST_METHOD(lib_create_copies_multiple_hit_object) {
+			auto copies = lib_functions::create_copies<hit_object>
+				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), std::vector<double>{1000, 2000});
+			// Get unique offset for copies
+			Assert::IsTrue(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
+		}
+		TEST_METHOD(lib_create_copies_singular_timing_point) {
+			auto copies = lib_functions::create_copies<timing_point>
+				(mocks.timing_point_sv, std::vector<double>{1000, 2000});
+			Assert::IsTrue(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
+		}
+		TEST_METHOD(lib_create_copies_multiple_timing_point) {
+			auto copies = lib_functions::create_copies<timing_point>
+				(std::make_shared<timing_point_v>(mocks.timing_point_multiple), std::vector<double>{1000, 2000});
+			// Get unique offset for copies
+			Assert::IsTrue(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
+		}
+		TEST_METHOD(lib_create_copies_sub_hit_object) {
+			auto copies = lib_functions::create_copies_by_subdivision<hit_object>
+				(std::vector<double>({ 100,300,500,700,1000 }), mocks.hit_object_note, 3);
 			for (auto ho : *copies) {
 				Log(ho.get_string_raw().c_str());
 			}
 		}
-		TEST_METHOD(lib_create_copies_multiple) {
-			auto copies = lib_functions::create_copies<hit_object>
-				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), std::vector<double>{1000, 2000});
-			for (hit_object ho : *copies) {
-				Log(ho.get_string_raw().c_str());
-			}
-		}
-
 	};
 
 }
