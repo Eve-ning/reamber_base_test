@@ -305,6 +305,18 @@ namespace reamber_base_test
 			};
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
+		TEST_METHOD(lib_create_copies_reldiff) {
+			auto copies = lib_functions::create_copies_by_relative_difference(
+				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, true);
+
+			std::vector<std::string> expected = {
+				"64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
+				"64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
+				"64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
+			};
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
+		}
+	
 	};
 
 }
