@@ -270,9 +270,40 @@ namespace reamber_base_test
 		TEST_METHOD(lib_create_copies_sub_hit_object) {
 			auto copies = lib_functions::create_copies_by_subdivision<hit_object>
 				(std::vector<double>({ 100,300,500,700,1000 }), mocks.hit_object_note, 3);
-			for (auto ho : *copies) {
-				Log(ho.get_string_raw().c_str());
-			}
+			std::vector<std::string> expected = {
+				"64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1 -
+				"64,192,166.666667,1,0,0:0:0:50:hitsound.wav", // Subd 2
+				"64,192,233.333333,1,0,0:0:0:50:hitsound.wav", // Subd 3
+				"64,192,300.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1 -
+				"64,192,366.666667,1,0,0:0:0:50:hitsound.wav", // Subd 2
+				"64,192,433.333333,1,0,0:0:0:50:hitsound.wav", // Subd 3
+				"64,192,500.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1 -
+				"64,192,566.666667,1,0,0:0:0:50:hitsound.wav", // Subd 2
+				"64,192,633.333333,1,0,0:0:0:50:hitsound.wav", // Subd 3
+				"64,192,700.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1 -
+				"64,192,800.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
+				"64,192,900.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
+				"64,192,1000.000000,1,0,0:0:0:50:hitsound.wav" // Subd 1 -
+			};
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
+		}
+		TEST_METHOD(lib_create_copies_sub_hit_object_copy) {
+			auto copies = lib_functions::create_copies_by_subdivision<hit_object>
+				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 5, true, true);
+
+			std::vector<std::string> expected = {
+				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
+				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+			};
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 	};
 
