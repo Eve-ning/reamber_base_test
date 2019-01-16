@@ -329,7 +329,14 @@ namespace reamber_base_test
 
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
-	
+		TEST_METHOD(lib_normalize) {
+			auto normalized = lib_functions::create_normalize(mocks.timing_point_multiple, 200, false);
+			std::vector<std::string> expected = {
+				"0.000000,-200.000000,4,1,1,50,0,0"
+			};
+
+			Assert::IsTrue(normalized.get_string_raw_v() == expected);
+		}
 	};
 
 }
