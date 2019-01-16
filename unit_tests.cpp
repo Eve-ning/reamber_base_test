@@ -287,22 +287,21 @@ namespace reamber_base_test
 			};
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
-		TEST_METHOD(lib_create_copies_sub_hit_object_copy) {
+		TEST_METHOD(lib_create_copies_sub_hit_object_delay) {
 			auto copies = lib_functions::create_copies_by_subdivision<hit_object>
-				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 5, true, true);
+				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 5, true, false);
 
 			std::vector<std::string> expected = {
-				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
 				"64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
 				"64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
 				"64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
 				"64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
-				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"320,192,2200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"320,192,2400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"320,192,2600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+				"320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 			};
+
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_copies_reldiff) {
@@ -314,6 +313,20 @@ namespace reamber_base_test
 				"64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
 				"64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
 			};
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
+		}
+		TEST_METHOD(lib_create_copies_reldiff_delay) {
+			auto copies = lib_functions::create_copies_by_relative_difference<hit_object>
+				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 0.25, true, true);
+
+			std::vector<std::string> expected = {
+				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
+				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+			};
+
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 	
