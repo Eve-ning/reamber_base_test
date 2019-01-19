@@ -337,6 +337,20 @@ namespace reamber_base_test
 
 			Assert::IsTrue(normalized.get_string_raw_v() == expected);
 		}
-	};
+		TEST_METHOD(lib_create_basic_stutter) {
+			auto tp_v = lib_functions::create_basic_stutter(std::vector<double>({ 100,300,700 }), 1.5, 0.25);
+
+			std::vector<std::string> expected = {
+				"100.000000,-66.666667,4,0,0,25,0,0",
+				"150.000000,-120.000000,4,0,0,25,0,0",
+				"300.000000,-66.666667,4,0,0,25,0,0",
+				"400.000000,-120.000000,4,0,0,25,0,0",
+				"700.000000,-66.666667,4,0,0,25,0,0"
+			};
+
+			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
+		}
+
+};
 
 }
