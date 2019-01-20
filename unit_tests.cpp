@@ -241,8 +241,7 @@ namespace reamber_base_test
 	public:
 		TEST_METHOD(lib_get_offset_difference) {
 			auto offset_difference =
-				lib_functions::get_offset_difference<hit_object>(
-					std::make_shared<hit_object_v>(mocks.hit_object_multiple));
+				lib_functions::get_offset_difference<hit_object>(&mocks.hit_object_multiple);
 			Assert::IsTrue(offset_difference == std::vector<double>{1000, 1000});
 		}
 		TEST_METHOD(lib_create_copies_singular_hit_object) {
@@ -252,7 +251,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_copies_multiple_hit_object) {
 			auto copies = lib_functions::create_copies<hit_object>
-				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), std::vector<double>{1000, 2000});
+				(&mocks.hit_object_multiple, std::vector<double>{1000, 2000});
 			// Get unique offset for copies
 			Assert::IsTrue(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
 		}
@@ -263,7 +262,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_copies_multiple_timing_point) {
 			auto copies = lib_functions::create_copies<timing_point>
-				(std::make_shared<timing_point_v>(mocks.timing_point_multiple), std::vector<double>{1000, 2000});
+				(&mocks.timing_point_multiple, std::vector<double>{1000, 2000});
 			// Get unique offset for copies
 			Assert::IsTrue(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
 		}
@@ -289,7 +288,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_copies_sub_hit_object_delay) {
 			auto copies = lib_functions::create_copies_by_subdivision<hit_object>
-				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 5, true, false);
+				(&mocks.hit_object_multiple, 5, true, false);
 
 			std::vector<std::string> expected = {
 				"64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
@@ -317,7 +316,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_copies_reldiff_delay) {
 			auto copies = lib_functions::create_copies_by_relative_difference<hit_object>
-				(std::make_shared<hit_object_v>(mocks.hit_object_multiple), 0.25, true, true);
+				(&mocks.hit_object_multiple, 0.25, true, true);
 
 			std::vector<std::string> expected = {
 				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
