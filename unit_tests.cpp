@@ -88,7 +88,6 @@ public:
 	timing_point timing_point_bpm;
 	hit_object editor_hit_object_singular;
 	hit_object_v editor_hit_object_multiple = hit_object_v(2);
-
 	hit_object_v hit_object_multiple = hit_object_v(3);
 	timing_point_v timing_point_multiple = timing_point_v(3);
 
@@ -234,6 +233,34 @@ namespace reamber_base_test
 
 			Assert::IsTrue(tp_v == tp_v_sort_desc);
 		}
+	
+		TEST_METHOD(timing_point_v_multiply) {
+			//        [0] [1] [2] [3] [4]
+			// SELF :  1   1           1
+			// EFF  :  1       1   1
+			timing_point_v tp_v(4);
+
+			tp_v[0].load_parameters(0, 1, false);
+			tp_v[1].load_parameters(1, 2, false);
+			tp_v[2].load_parameters(4, 4, false);
+			tp_v[3].load_parameters(5, 8, false);
+			timing_point_v tp_v_eff(3);
+
+			tp_v_eff[0].load_parameters(0, 1, false);
+			tp_v_eff[1].load_parameters(2, 0.5, false);
+			tp_v_eff[2].load_parameters(3, 0.25, false);
+	
+			tp_v.multiply_with(tp_v_eff);
+
+			std::vector<std::string> expected = {
+				"0.000000,-100.000000,4,0,0,25,0,0",
+				"1.000000,-50.000000,4,0,0,25,0,0",
+				"4.000000,-100.000000,4,0,0,25,0,0",
+				"5.000000,-50.000000,4,0,0,25,0,0"
+			};
+
+			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
+		}
 	};
 
 	TEST_CLASS(lib_functions_test_class)
@@ -344,12 +371,12 @@ namespace reamber_base_test
 				"150.000000,-120.000000,4,0,0,25,0,0",
 				"300.000000,-66.666667,4,0,0,25,0,0",
 				"400.000000,-120.000000,4,0,0,25,0,0",
-				"700.000000,-66.666667,4,0,0,25,0,0"
+				"700.000000,-100.000000,4,0,0,25,0,0"
 			};
 
 			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
 		}
-
+		
 };
 
 }
