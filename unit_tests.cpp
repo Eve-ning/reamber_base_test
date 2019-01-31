@@ -250,7 +250,7 @@ namespace reamber_base_test
 			tp_v_eff[1].load_parameters(2, 0.5, false);
 			tp_v_eff[2].load_parameters(3, 0.25, false);
 	
-			tp_v.multiply_with(tp_v_eff);
+			tp_v.cross_effect_multiply(tp_v_eff);
 
 			std::vector<std::string> expected = {
 				"0.000000,-100.000000,4,0,0,25,0,0",
@@ -350,6 +350,32 @@ namespace reamber_base_test
 				"64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
 				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+			};
+
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
+		}
+		TEST_METHOD(lib_create_copies_absdiff) {
+			auto copies = lib_functions::create_copies_by_absolute_difference(
+				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, true, false, true);
+
+			std::vector<std::string> expected = {
+				"64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
+				"64,192,250.000000,1,0,0:0:0:50:hitsound.wav",
+				"64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
+			};
+
+			Assert::IsTrue(copies->get_string_raw_v() == expected);
+		}
+		TEST_METHOD(lib_create_copies_absdiff_delay) {
+			auto copies = lib_functions::create_copies_by_absolute_difference<hit_object>
+				(&mocks.hit_object_multiple, 15, true, true, true, true);
+
+			std::vector<std::string> expected = {
+				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
+				"64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
+				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+				"320,192,2015.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
 			};
 
