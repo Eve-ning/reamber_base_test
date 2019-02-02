@@ -513,6 +513,7 @@ namespace reamber_base_test
 			Assert::IsTrue(normalized.get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_stutter_relative) {
+			// SV
 			auto tp_v = lib_functions::create_stutter_relative(std::vector<double>({ 100,300,700 }), 1.5, 0.25);
 
 			std::vector<std::string> expected = {
@@ -524,9 +525,23 @@ namespace reamber_base_test
 			};
 
 			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
+
+			// BPM
+			tp_v = lib_functions::create_stutter_relative(std::vector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
+
+			expected = {
+				"100.000000,150.000000,4,0,0,25,1,0",	
+				"150.000000,450.000000,4,0,0,25,1,0",
+				"300.000000,150.000000,4,0,0,25,1,0",
+				"400.000000,450.000000,4,0,0,25,1,0",
+				"700.000000,300.000000,4,0,0,25,1,0"
+			};
+
+			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_stutter_absolute) {
-			auto tp_v = lib_functions::create_stutter_absolute(std::vector<double>({ 100,300,700 }), 1.5, 100);
+			// SV
+			auto tp_v = lib_functions::create_stutter_absolute(std::vector<double>({ 100,300,700 }), 1.5, 100, 1.0);
 
 			std::vector<std::string> expected = {
 				"100.000000,-66.666667,4,0,0,25,0,0",
@@ -534,6 +549,19 @@ namespace reamber_base_test
 				"300.000000,-66.666667,4,0,0,25,0,0",
 				"400.000000,-120.000000,4,0,0,25,0,0",
 				"700.000000,-100.000000,4,0,0,25,0,0"
+			};
+
+			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
+
+			// BPM
+			tp_v = lib_functions::create_stutter_absolute(std::vector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
+
+			expected = {
+				"100.000000,400.000000,4,0,0,25,1,0",
+				"200.000000,1200.000000,4,0,0,25,1,0",
+				"300.000000,400.000000,4,0,0,25,1,0",
+				"400.000000,720.000000,4,0,0,25,1,0",
+				"700.000000,600.000000,4,0,0,25,1,0"
 			};
 
 			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
