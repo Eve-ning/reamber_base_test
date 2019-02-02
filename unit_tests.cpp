@@ -515,7 +515,6 @@ namespace reamber_base_test
 		TEST_METHOD(lib_create_stutter_relative) {
 			auto tp_v = lib_functions::create_stutter_relative(std::vector<double>({ 100,300,700 }), 1.5, 0.25);
 
-
 			std::vector<std::string> expected = {
 				"100.000000,-66.666667,4,0,0,25,0,0",
 				"150.000000,-120.000000,4,0,0,25,0,0",
@@ -542,9 +541,13 @@ namespace reamber_base_test
 
 		TEST_METHOD(lib_create_stutter_from_offset) {
 			auto tp_v = lib_functions::create_stutter_from_offset(std::vector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
-			/*for (auto s : tp_v) {
-				Log(s.get_string_raw().c_str());
-			}*/
+			std::vector<std::string> expected = {
+				"100.000000,-66.666667,4,0,0,25,0,0",
+				"400.000000,-200.000000,4,0,0,25,0,0",
+				"700.000000,-100.000000,4,0,0,25,0,0"
+			};
+
+			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
 		}
 		
 };
