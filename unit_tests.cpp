@@ -295,7 +295,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_copies_sub_hit_object) {
 			auto copies = lib_functions::create_copies_subdivision<hit_object>
-				(std::vector<double>({ 100,300,500,700,1000 }), mocks.hit_object_note, 2);
+				(std::vector<double>({ 100,300,500,700,1000 }), mocks.hit_object_note, 2, false);
 
 			std::vector<std::string> expected = {
 				"64,192,166.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
@@ -307,72 +307,72 @@ namespace reamber_base_test
 				"64,192,800.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
 				"64,192,900.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
 			};
+
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_copies_sub_hit_object_delay) {
-			auto copies = lib_functions::create_copies_subdivision<hit_object>
-				(&mocks.hit_object_multiple, 4, false);
-
-			for (auto s : *copies) {
-				Log(s.get_string_raw().c_str());
-			}
+			auto copies = lib_functions::create_copies_subdivision(
+				&mocks.hit_object_multiple, 4, false);
 
 			std::vector<std::string> expected = {
-				"320,192,1200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"320,192,1400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"320,192,1600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"320,192,1800.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"448,192,2200.000000,1,0,0:0:0:60:hit3.wav",
-				"448,192,2400.000000,1,0,0:0:0:60:hit3.wav",
-				"448,192,2600.000000,1,0,0:0:0:60:hit3.wav",
-				"448,192,2800.000000,1,0,0:0:0:60:hit3.wav"
+                "64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
+                "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
+                "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
+                "64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
+                "320,192,2200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+                "320,192,2400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+                "320,192,2600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+                "320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
 			};
 
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_copies_reldiff) {
 			auto copies = lib_functions::create_copies_rel_diff(
-				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25);
+				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, false);
 
 			std::vector<std::string> expected = {
 				"64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
 			};
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
+
 		TEST_METHOD(lib_create_copies_reldiff_delay) {
 			auto copies = lib_functions::create_copies_rel_diff<hit_object>
 				(&mocks.hit_object_multiple, 0.25, false);
 
+			for (auto s : *copies) {
+				Log(s.get_string_raw().c_str());
+			}
+			for (auto s : mocks.hit_object_multiple) {
+				Log(s.get_string_raw().c_str());
+			}
 
 			std::vector<std::string> expected = {
-				"320,192,1250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"448,192,2250.000000,1,0,0:0:0:60:hit3.wav"
+				"64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
+				"320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
 			};
 
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
+
 		TEST_METHOD(lib_create_copies_absdiff) {
 			auto copies = lib_functions::create_copies_abs_diff(
-				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, true, false);
+				std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, false, true, false);
 
 			std::vector<std::string> expected = {
-				"64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
-				"64,192,250.000000,1,0,0:0:0:50:hitsound.wav",
-				"64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
+				"64,192,150.000000,1,0,0:0:0:50:hitsound.wav"
 			};
 
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
 		}
 		TEST_METHOD(lib_create_copies_absdiff_delay) {
 			auto copies = lib_functions::create_copies_abs_diff<hit_object>
-				(&mocks.hit_object_multiple, 15, true, true, true);
+				(&mocks.hit_object_multiple, 15, false, true, true, true);
 
 			std::vector<std::string> expected = {
-				"64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
 				"64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
-				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
 				"320,192,2015.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-				"448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
 			};
 
 			Assert::IsTrue(copies->get_string_raw_v() == expected);
@@ -387,6 +387,7 @@ namespace reamber_base_test
 		}
 		TEST_METHOD(lib_create_stutter_relative) {
 			auto tp_v = lib_functions::create_stutter_relative(std::vector<double>({ 100,300,700 }), 1.5, 0.25);
+
 
 			std::vector<std::string> expected = {
 				"100.000000,-66.666667,4,0,0,25,0,0",
@@ -414,9 +415,9 @@ namespace reamber_base_test
 
 		TEST_METHOD(lib_create_stutter_from_offset) {
 			auto tp_v = lib_functions::create_stutter_from_offset(std::vector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
-			for (auto s : tp_v) {
+			/*for (auto s : tp_v) {
 				Log(s.get_string_raw().c_str());
-			}
+			}*/
 		}
 		
 };
