@@ -577,6 +577,47 @@ namespace reamber_base_test
 
 			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
 		}
+
+		TEST_METHOD(lib_extract_nth) {
+			// HO
+			auto ho_v = lib_functions::extract_nth(&mocks.hit_object_multiple, 2, 1);
+
+			std::vector<std::string> expected = {
+				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+			};
+
+			Assert::IsTrue(ho_v->get_string_raw_v() == expected);
+
+			// TP
+			auto tp_v = lib_functions::extract_nth(&mocks.timing_point_multiple, 2, 1);
+
+			expected = {
+				"1000.000000,-50.000000,4,1,1,50,0,1"
+			};
+
+			Assert::IsTrue(tp_v->get_string_raw_v() == expected);
+		}
+
+		TEST_METHOD(lib_delete_nth) {
+			// HO
+			auto ho_v = lib_functions::delete_nth(&mocks.hit_object_multiple, 2, 0);
+
+			std::vector<std::string> expected = {
+				"320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+			};
+
+			Assert::IsTrue(ho_v->get_string_raw_v() == expected);
+
+			// TP
+			auto tp_v = lib_functions::delete_nth(&mocks.timing_point_multiple, 2, 0);
+
+			expected = {
+				"1000.000000,-50.000000,4,1,1,50,0,1"
+			};
+
+
+			Assert::IsTrue(tp_v->get_string_raw_v() == expected);
+		}
 		
 };
 
