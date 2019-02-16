@@ -261,6 +261,32 @@ namespace reamber_base_test
 
 			Assert::IsTrue(tp_v.get_string_raw_v() == expected);
 		}
+		TEST_METHOD(timing_point_v_get_ave) {
+			// SV
+			timing_point_v tp_v = timing_point_v(3);
+			tp_v[0].load_parameters(0, 1.5, false);
+			tp_v[1].load_parameters(100, 0.5, false);
+			tp_v[2].load_parameters(400, 1.75, false);
+			
+			Assert::AreEqual(0.75, tp_v.get_average_sv_value());
+
+			// BPM
+			tp_v = timing_point_v(3);
+			tp_v[0].load_parameters(0, 200, true);
+			tp_v[1].load_parameters(100, 100, true);
+			tp_v[2].load_parameters(400, 150, true);
+
+			Assert::AreEqual(125.0, tp_v.get_average_bpm_value());
+
+			// MIXED
+			tp_v = timing_point_v(4);
+			tp_v[0].load_parameters(0, 200, true);
+			tp_v[1].load_parameters(50, 0.5, false); // JUNK SV
+			tp_v[2].load_parameters(100, 100, true);
+			tp_v[3].load_parameters(400, 150, true);
+
+			Assert::AreEqual(125.0, tp_v.get_average_bpm_value());
+		}
 	};
 
 	TEST_CLASS(lib_functions_test_class)
@@ -614,7 +640,6 @@ namespace reamber_base_test
 			expected = {
 				"1000.000000,-50.000000,4,1,1,50,0,1"
 			};
-
 
 			Assert::IsTrue(tp_v->get_string_raw_v() == expected);
 		}
