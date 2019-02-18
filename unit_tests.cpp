@@ -101,8 +101,8 @@ namespace reamber_base_test
 	public:
 		TEST_METHOD(trim_editor_hit_object) {
 			
-			Assert::AreEqual(std::string("1000|1,2000|2"),
-				hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
+			Assert::AreEqual("1000|1,2000|2",
+				hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple.c_str()).c_str());
 		}
 	};
 	TEST_CLASS(object_class)
@@ -111,14 +111,15 @@ namespace reamber_base_test
 		TEST_METHOD(hit_object_raw_loading)
 		{
 			hit_object ho;
-			ho.load_raw_hit_object(mocks.raw_hit_object_str_note, 4);
+			ho.load_raw_hit_object(mocks.raw_hit_object_str_note.c_str(), 4);
+
 
 			Assert::IsTrue(ho == mocks.hit_object_note);
 		}
 		TEST_METHOD(timing_point_raw_load)
 		{
 			timing_point tp;
-			tp.load_raw_timing_point(mocks.raw_timing_point_bpm);
+			tp.load_raw_timing_point(mocks.raw_timing_point_bpm.c_str());
 
 			Assert::IsTrue(tp == mocks.timing_point_bpm);
 		}
@@ -126,7 +127,7 @@ namespace reamber_base_test
 		{
 			hit_object ho;
 			std::string load_str = "00:01:000 (1000|0) - ";
-			ho.load_editor_hit_object(load_str, 4);
+			ho.load_editor_hit_object(load_str.c_str(), 4);
 
 			hit_object ho_expected;
 			ho_expected.load_parameters(
@@ -140,19 +141,19 @@ namespace reamber_base_test
 
 		TEST_METHOD(hit_object_v_raw_loading) {
 			hit_object_v ho_v;
-			ho_v.load_raw_hit_object(mocks.raw_hit_object_str_multiple, 4);
+			ho_v.load_raw_hit_object(mocks.raw_hit_object_str_multiple.c_str(), 4);
 
 			Assert::IsTrue(ho_v == mocks.hit_object_multiple);
 		}
 		TEST_METHOD(timing_point_v_raw_loading) {
 			timing_point_v tp_v;
-			tp_v.load_raw_timing_point(mocks.raw_timing_point_str_multiple);
+			tp_v.load_raw_timing_point(mocks.raw_timing_point_str_multiple.c_str());
 
 			Assert::IsTrue(tp_v == mocks.timing_point_multiple);
 		}
 		TEST_METHOD(hit_object_v_editor_loading) {
 			hit_object_v ho_v;
-			ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple, 4);
+			ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple.c_str(), 4);
 
 			Assert::IsTrue(ho_v == mocks.editor_hit_object_multiple);
 		}
