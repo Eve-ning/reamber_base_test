@@ -14,4 +14,4 @@ else:unix: LIBS += -L$$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bi
 INCLUDEPATH += $$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bit-Release/release
 DEPENDPATH += $$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bit-Release/release
 
-SOURCES +=  tst_reamber_base_test.cpp
+SOURCES +=  reamber_base_test.cpp
