@@ -95,7 +95,7 @@ class reamber_base_test : public QObject
 
 
 private slots:
-//    void trim_editor_hit_object();
+    void trim_editor_hit_object();
     void hit_object_raw_loading();
     void timing_point_raw_load();
     void hit_object_editor_loading();
@@ -127,8 +127,10 @@ private slots:
     void lib_create_copies_multiple_hit_object();
     void lib_create_copies_singular_timing_point();
     void lib_create_copies_multiple_timing_point();
-    void lib_create_copies_sub_hit_object();
-    void lib_create_copies_sub_hit_object_delay();
+    void lib_create_copies_sub_by_hit_object();
+    void lib_create_copies_sub_by_hit_object_delay();
+    void lib_create_copies_sub_to_hit_object();
+    void lib_create_copies_sub_to_hit_object_delay();
     void lib_create_copies_reldiff();
     void lib_create_copies_reldiff_delay();
     void lib_create_copies_absdiff();
@@ -145,13 +147,12 @@ private:
 
 };
 
-//void reamber_base_test::trim_editor_hit_object() {
+void reamber_base_test::trim_editor_hit_object() {
 
-//    timing_point_v tp_v;
-//    QVERIFY(std::string("1000|1,2000|2") ==
-//                     hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
-//}
-
+    timing_point_v tp_v;
+    QVERIFY(std::string("1000|1,2000|2") ==
+                     hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
+}
 void reamber_base_test::hit_object_raw_loading()
 {
     hit_object ho;
@@ -376,9 +377,9 @@ void reamber_base_test::lib_create_copies_multiple_timing_point() {
     // Get unique offset for copies
     QVERIFY(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
 }
-void reamber_base_test::lib_create_copies_sub_hit_object() {
+void reamber_base_test::lib_create_copies_sub_by_hit_object() {
     // EXCLUDE
-    auto copies = lib_functions::create_copies_subdivision<hit_object>
+    auto copies = lib_functions::create_copies_subdivision_by<hit_object>
             (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 2, false);
 
     std::vector<std::string> expected = {
@@ -391,7 +392,7 @@ void reamber_base_test::lib_create_copies_sub_hit_object() {
     QVERIFY(copies->get_string_raw_v() == expected);
 
     // INCLUDE
-    copies = lib_functions::create_copies_subdivision<hit_object>
+    copies = lib_functions::create_copies_subdivision_by<hit_object>
             (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 2, true);
 
     expected = {
@@ -406,8 +407,8 @@ void reamber_base_test::lib_create_copies_sub_hit_object() {
 
     QVERIFY(copies->get_string_raw_v() == expected);
 }
-void reamber_base_test::lib_create_copies_sub_hit_object_delay() {
-    auto copies = lib_functions::create_copies_subdivision(
+void reamber_base_test::lib_create_copies_sub_by_hit_object_delay() {
+    auto copies = lib_functions::create_copies_subdivision_by(
                 &mocks.hit_object_multiple, 4, false);
 
     std::vector<std::string> expected = {
@@ -423,7 +424,7 @@ void reamber_base_test::lib_create_copies_sub_hit_object_delay() {
 
     QVERIFY(copies->get_string_raw_v() == expected);
 
-    copies = lib_functions::create_copies_subdivision(
+    copies = lib_functions::create_copies_subdivision_by(
                 &mocks.hit_object_multiple, 4, true);
 
     expected = {
@@ -443,6 +444,90 @@ void reamber_base_test::lib_create_copies_sub_hit_object_delay() {
     QVERIFY(copies->get_string_raw_v() == expected);
 
 }
+void reamber_base_test::lib_create_copies_sub_to_hit_object() {
+    // EXCLUDE
+    auto copies = lib_functions::create_copies_subdivision_to<hit_object>
+            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 50, false);
+
+    std::vector<std::string> expected = {
+        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,200.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,250.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,350.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,400.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,450.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 3
+    };
+
+    for (auto ho : *copies) {
+        qDebug() << ho.get_string_raw().c_str();
+    }
+
+    QVERIFY(copies->get_string_raw_v() == expected);
+
+    // INCLUDE
+    copies = lib_functions::create_copies_subdivision_to<hit_object>
+            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 50, true);
+
+    expected = {
+        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,200.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,250.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,350.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,400.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,450.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,500.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 0
+    };
+
+    for (auto ho : *copies) {
+        qDebug() << ho.get_string_raw().c_str();
+    }
+
+    QVERIFY(copies->get_string_raw_v() == expected);
+}
+void reamber_base_test::lib_create_copies_sub_to_hit_object_delay() {
+    auto copies = lib_functions::create_copies_subdivision_to(
+                &mocks.hit_object_multiple, 250, false);
+
+    std::vector<std::string> expected = {
+        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
+        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2500.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2750.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+    };
+
+    for (auto ho : *copies) {
+        qDebug() << ho.get_string_raw().c_str();
+    }
+
+    QVERIFY(copies->get_string_raw_v() == expected);
+
+    copies = lib_functions::create_copies_subdivision_to(
+                &mocks.hit_object_multiple, 250, true);
+
+    expected = {
+        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2500.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2750.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+    };
+
+    for (auto ho : *copies) {
+        qDebug() << ho.get_string_raw().c_str();
+    }
+
+    QVERIFY(copies->get_string_raw_v() == expected);
+
+}
+
 void reamber_base_test::lib_create_copies_reldiff() {
     auto copies = lib_functions::create_copies_rel_diff(
                 std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, false);
