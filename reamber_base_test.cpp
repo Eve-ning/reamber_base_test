@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <custom_lib_functions/lib_functions.h>
+#include <QDebug>
 
 
 class mock_objects {
@@ -93,9 +94,6 @@ class reamber_base_test : public QObject
 {
     Q_OBJECT
 
-public:
-    reamber_base_test();
-    ~reamber_base_test();
 
 private slots:
     void trim_editor_hit_object();
@@ -105,19 +103,26 @@ private slots:
     void hit_object_v_raw_loading();
     void timing_point_v_raw_loading();
     void hit_object_v_editor_loading();
+
     void fobo_hit_object();
     void fobo_timing_point();
     void lobo_hit_object();
     void lobo_timing_point();
+
     void get_column_v();
     void get_offset_min_hit_object();
     void get_offset_max_hit_object();
     void get_offset_min_timing_point();
     void get_offset_max_timing_point();
+
     void sort_by_offset_hit_object();
     void sort_by_offset_timing_point();
+
     void timing_point_v_multiply();
     void timing_point_v_get_ave();
+
+    void timing_point_v_arithmetic();
+
     void lib_get_offset_difference();
     void lib_create_copies_singular_hit_object();
     void lib_create_copies_multiple_hit_object();
@@ -140,18 +145,6 @@ private:
     mock_objects mocks = mock_objects();
 
 };
-
-reamber_base_test::reamber_base_test()
-{
-
-}
-
-reamber_base_test::~reamber_base_test()
-{
-
-}
-
-
 
 void reamber_base_test::trim_editor_hit_object() {
 
@@ -245,16 +238,16 @@ void reamber_base_test::get_column_v() {
             std::vector<unsigned int>{0, 2, 3}));
 }
 void reamber_base_test::get_offset_min_hit_object() {
-    QVERIFY(mocks.hit_object_multiple.get_offset_min() == 1000);
+    QVERIFY(mocks.hit_object_multiple.get_offset_min() == 1000.0);
 }
 void reamber_base_test::get_offset_max_hit_object() {
-    QVERIFY(mocks.hit_object_multiple.get_offset_max() == 3000);
+    QVERIFY(mocks.hit_object_multiple.get_offset_max() == 3000.0);
 }
 void reamber_base_test::get_offset_min_timing_point() {
-    QVERIFY(mocks.timing_point_multiple.get_offset_min() == 0);
+    QVERIFY(mocks.timing_point_multiple.get_offset_min() == 0.0);
 }
 void reamber_base_test::get_offset_max_timing_point() {
-    QVERIFY(mocks.timing_point_multiple.get_offset_max() == 2000);
+    QVERIFY(mocks.timing_point_multiple.get_offset_max() == 2000.0);
 }
 
 void reamber_base_test::sort_by_offset_hit_object() {
@@ -338,6 +331,21 @@ void reamber_base_test::timing_point_v_get_ave() {
     tp_v[3].load_parameters(400, 150, true);
 
     QVERIFY(125.0 == tp_v.get_average_bpm_value());
+}
+
+void reamber_base_test::timing_point_v_arithmetic()
+{
+    // +
+    timing_point_v tp_v = timing_point_v(3);
+    tp_v[0].load_parameters(0, 1.5, false);
+    tp_v[1].load_parameters(100, 0.5, false);
+    tp_v[2].load_parameters(400, 1.75, false);
+
+    tp_v += 2;
+
+    for (auto tp : tp_v) {
+        qDebug() << tp.get_string_raw().c_str();
+    }
 }
 
 void reamber_base_test::lib_get_offset_difference() {
@@ -528,7 +536,7 @@ void reamber_base_test::lib_create_copies_absdiff() {
 void reamber_base_test::lib_create_copies_absdiff_delay() {
     // EXCLUDE
     auto copies = lib_functions::create_copies_abs_diff<hit_object>
-            (&mocks.hit_object_multiple, 15, false, true, true, true);
+            (&mocks.hit_object_multiple, 15, false, true, true);
 
     std::vector<std::string> expected = {
         "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
@@ -538,7 +546,7 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
     // INCLUDE
     QVERIFY(copies->get_string_raw_v() == expected);
     copies = lib_functions::create_copies_abs_diff<hit_object>
-            (&mocks.hit_object_multiple, 15, true, true, true, true);
+            (&mocks.hit_object_multiple, 15, true, true, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -553,7 +561,7 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
     // EXCLUDE OVERLAP
     QVERIFY(copies->get_string_raw_v() == expected);
     copies = lib_functions::create_copies_abs_diff<hit_object>
-            (&mocks.hit_object_multiple, 2000, true, true, true, true);
+            (&mocks.hit_object_multiple, 2000, true, true, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -566,7 +574,7 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
     // EXCLUDE OVERLAP
     QVERIFY(copies->get_string_raw_v() == expected);
     copies = lib_functions::create_copies_abs_diff<hit_object>
-            (&mocks.hit_object_multiple, 100, true, true, false, true);
+            (&mocks.hit_object_multiple, 100, true, false, false);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",

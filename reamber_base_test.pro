@@ -1,6 +1,6 @@
 QT += testlib
 QT += gui
-CONFIG += qt warn_on depend_includepath testcase
+CONFIG += qt warn_on depend_includepath testcase console
 
 TEMPLATE = app
 
