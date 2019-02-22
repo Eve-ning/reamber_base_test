@@ -1,5 +1,4 @@
-QT += testlib
-QT += gui
+QT += testlib gui
 CONFIG += qt warn_on depend_includepath testcase console
 
 TEMPLATE = app
@@ -14,4 +13,4 @@ else:unix: LIBS += -L$$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bi
 INCLUDEPATH += $$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bit-Release/release
 DEPENDPATH += $$PWD/../build-reamber_base-Desktop_Qt_5_12_0_MSVC2017_32bit-Release/release
 
-SOURCES +=  reamber_base_test.cpp
+SOURCES +=  tst_reamber_base_test.cpp

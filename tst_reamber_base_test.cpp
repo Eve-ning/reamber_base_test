@@ -6,7 +6,6 @@
 #include <custom_lib_functions/lib_functions.h>
 #include <QDebug>
 
-
 class mock_objects {
 public:
     mock_objects() {
@@ -96,7 +95,7 @@ class reamber_base_test : public QObject
 
 
 private slots:
-    void trim_editor_hit_object();
+//    void trim_editor_hit_object();
     void hit_object_raw_loading();
     void timing_point_raw_load();
     void hit_object_editor_loading();
@@ -146,12 +145,12 @@ private:
 
 };
 
-void reamber_base_test::trim_editor_hit_object() {
+//void reamber_base_test::trim_editor_hit_object() {
 
-    timing_point_v tp_v;
-    QVERIFY(std::string("1000|1,2000|2") ==
-                     hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
-}
+//    timing_point_v tp_v;
+//    QVERIFY(std::string("1000|1,2000|2") ==
+//                     hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
+//}
 
 void reamber_base_test::hit_object_raw_loading()
 {
@@ -346,6 +345,8 @@ void reamber_base_test::timing_point_v_arithmetic()
     for (auto tp : tp_v) {
         qDebug() << tp.get_string_raw().c_str();
     }
+
+    QVERIFY(true);
 }
 
 void reamber_base_test::lib_get_offset_difference() {
