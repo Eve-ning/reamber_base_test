@@ -149,9 +149,9 @@ private:
 
 void reamber_base_test::trim_editor_hit_object() {
 
-    timing_point_v tp_v;
-    QVERIFY(std::string("1000|1,2000|2") ==
-                     hit_object::trim_editor_hit_object(mocks.editor_hit_object_str_multiple));
+    std::string str = mocks.editor_hit_object_str_multiple;
+    hit_object::trim_editor_hit_object(str);
+    QVERIFY(std::string("1000|1,2000|2") == str);
 }
 void reamber_base_test::hit_object_raw_loading()
 {
@@ -197,7 +197,7 @@ void reamber_base_test::timing_point_v_raw_loading() {
 }
 void reamber_base_test::hit_object_v_editor_loading() {
     hit_object_v ho_v;
-    ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple, 4);
+    qDebug() << ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple, 4);
 
     QVERIFY(ho_v == mocks.editor_hit_object_multiple);
 }
