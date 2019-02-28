@@ -32,15 +32,15 @@ public:
         editor_hit_object_multiple[1].load_parameters(2, 2000, 0, 4);
 
         hit_object_multiple[0].load_parameters(
-            0, 192, 1000, 1, osu_object::sample_set::AUTO, 0,
+            0, 192, 1000, hit_object::NORMAL, osu_object::sample_set::AUTO, 0,
             osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
             osu_object::sample_set::AUTO, 40, "hit1.wav", 4);
         hit_object_multiple[1].load_parameters(
-            2, 192, 2000, 1, osu_object::sample_set::AUTO, 2500,
+            2, 192, 2000, hit_object::LN, osu_object::sample_set::AUTO, 2500,
             osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
             osu_object::sample_set::AUTO, 50, "hit2.wav", 4);
         hit_object_multiple[2].load_parameters(
-            3, 192, 3000, 1, osu_object::sample_set::AUTO, 0,
+            3, 192, 3000, hit_object::NORMAL, osu_object::sample_set::AUTO, 0,
             osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
             osu_object::sample_set::AUTO, 60, "hit3.wav", 4);
 
@@ -416,10 +416,10 @@ void reamber_base_test::lib_create_copies_sub_by_hit_object_delay() {
         "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+        "320,192,2200.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2400.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2600.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2800.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(copies->get_string_raw_v() == expected);
@@ -433,11 +433,11 @@ void reamber_base_test::lib_create_copies_sub_by_hit_object_delay() {
         "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2200.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2400.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2600.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2800.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2200.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2400.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2600.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2800.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
@@ -494,14 +494,10 @@ void reamber_base_test::lib_create_copies_sub_to_hit_object_delay() {
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2500.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2750.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2500.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2750.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
-
-    for (auto ho : *copies) {
-        qDebug() << ho.get_string_raw().c_str();
-    }
 
     QVERIFY(copies->get_string_raw_v() == expected);
 
@@ -513,16 +509,12 @@ void reamber_base_test::lib_create_copies_sub_to_hit_object_delay() {
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2500.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2750.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2500.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2750.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
-
-    for (auto ho : *copies) {
-        qDebug() << ho.get_string_raw().c_str();
-    }
 
     QVERIFY(copies->get_string_raw_v() == expected);
 
@@ -554,7 +546,7 @@ void reamber_base_test::lib_create_copies_reldiff_delay() {
 
     std::vector<std::string> expected = {
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(copies->get_string_raw_v() == expected);
@@ -565,8 +557,8 @@ void reamber_base_test::lib_create_copies_reldiff_delay() {
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2250.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
@@ -626,7 +618,7 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
 
     std::vector<std::string> expected = {
         "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2015.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2015.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
     };
 
     // INCLUDE
@@ -637,8 +629,8 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2015.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2015.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
@@ -651,7 +643,7 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
@@ -665,8 +657,8 @@ void reamber_base_test::lib_create_copies_absdiff_delay() {
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1900.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2900.000000,1,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "320,192,2900.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
@@ -746,12 +738,33 @@ void reamber_base_test::lib_create_stutter_from_offset() {
     QVERIFY(tp_v.get_string_raw_v() == expected);
 }
 
+void reamber_base_test::lib_delete_nth() {
+    // HO
+    auto ho_v = lib_functions::delete_nth(&mocks.hit_object_multiple, 2, 1);
+
+    std::vector<std::string> expected = {
+        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+    };
+
+    QVERIFY(ho_v->get_string_raw_v() == expected);
+
+    // TP
+    auto tp_v = lib_functions::delete_nth(&mocks.timing_point_multiple, 2, 1);
+
+    expected = {
+        "0.000000,150.000000,4,1,1,50,1,0",
+        "1000.000000,-50.000000,4,1,1,50,0,1"
+    };
+
+    QVERIFY(tp_v->get_string_raw_v() == expected);
+}
 void reamber_base_test::lib_extract_nth() {
     // HO
     auto ho_v = lib_functions::extract_nth(&mocks.hit_object_multiple, 2, 1);
 
     std::vector<std::string> expected = {
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
+        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(ho_v->get_string_raw_v() == expected);
@@ -767,25 +780,6 @@ void reamber_base_test::lib_extract_nth() {
     QVERIFY(tp_v->get_string_raw_v() == expected);
 }
 
-void reamber_base_test::lib_delete_nth() {
-    // HO
-    auto ho_v = lib_functions::delete_nth(&mocks.hit_object_multiple, 2, 0);
-
-    std::vector<std::string> expected = {
-        "320,192,2000.000000,1,0,2500.000000:0:0:0:50:hit2.wav"
-    };
-
-    QVERIFY(ho_v->get_string_raw_v() == expected);
-
-    // TP
-    auto tp_v = lib_functions::delete_nth(&mocks.timing_point_multiple, 2, 0);
-
-    expected = {
-        "1000.000000,-50.000000,4,1,1,50,0,1"
-    };
-
-    QVERIFY(tp_v->get_string_raw_v() == expected);
-}
 
 QTEST_APPLESS_MAIN(reamber_base_test)
 
