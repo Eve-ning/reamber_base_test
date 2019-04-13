@@ -3,7 +3,7 @@
 // add necessary includes here
 #include <iostream>
 #include <vector>
-#include <amber_f/lib_functions.h>
+#include <amber_f/amber_f.h>
 #include <QDebug>
 
 class mock_objects {
@@ -123,18 +123,18 @@ private slots:
     void timing_point_v_arithmetic();
 
     void lib_offset_diff();
-    void lib_create_copies_singular_hit_object();
-    void lib_create_copies_multiple_hit_object();
-    void lib_create_copies_singular_timing_point();
-    void lib_create_copies_multiple_timing_point();
-    void lib_create_copies_sub_by_hit_object();
-    void lib_create_copies_sub_by_hit_object_delay();
-    void lib_create_copies_sub_to_hit_object();
-    void lib_create_copies_sub_to_hit_object_delay();
-    void lib_create_copies_reldiff();
-    void lib_create_copies_reldiff_delay();
-    void lib_create_copies_absdiff();
-    void lib_create_copies_absdiff_delay();
+    void lib_copy_singular_hit_object();
+    void lib_copy_multiple_hit_object();
+    void lib_copy_singular_timing_point();
+    void lib_copy_multiple_timing_point();
+    void lib_copy_sub_by_hit_object();
+    void lib_copy_sub_by_hit_object_delay();
+    void lib_copy_sub_to_hit_object();
+    void lib_copy_sub_to_hit_object_delay();
+    void lib_copy_reldiff();
+    void lib_copy_reldiff_delay();
+    void lib_copy_absdiff();
+    void lib_copy_absdiff_delay();
     void lib_normalize();
     void lib_create_stutter_relative();
     void lib_create_stutter_absolute();
@@ -355,29 +355,29 @@ void reamber_base_test::lib_offset_diff() {
             amber_f::offset_diff<hit_object>(&mocks.hit_object_multiple);
     QVERIFY(offset_difference == std::vector<double>({1000, 1000}));
 }
-void reamber_base_test::lib_create_copies_singular_hit_object() {
+void reamber_base_test::lib_copy_singular_hit_object() {
     auto copies = amber_f::copy<hit_object>
             (mocks.hit_object_note, std::vector<double>{1000, 2000});
     QVERIFY(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
 }
-void reamber_base_test::lib_create_copies_multiple_hit_object() {
+void reamber_base_test::lib_copy_multiple_hit_object() {
     auto copies = amber_f::copy<hit_object>
             (&mocks.hit_object_multiple, std::vector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
 }
-void reamber_base_test::lib_create_copies_singular_timing_point() {
+void reamber_base_test::lib_copy_singular_timing_point() {
     auto copies = amber_f::copy<timing_point>
             (mocks.timing_point_sv, std::vector<double>{1000, 2000});
     QVERIFY(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
 }
-void reamber_base_test::lib_create_copies_multiple_timing_point() {
+void reamber_base_test::lib_copy_multiple_timing_point() {
     auto copies = amber_f::copy<timing_point>
             (&mocks.timing_point_multiple, std::vector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
 }
-void reamber_base_test::lib_create_copies_sub_by_hit_object() {
+void reamber_base_test::lib_copy_sub_by_hit_object() {
     // EXCLUDE
     auto copies = amber_f::copy_subd_by<hit_object>
             (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 2, false);
@@ -407,7 +407,7 @@ void reamber_base_test::lib_create_copies_sub_by_hit_object() {
 
     QVERIFY(copies->get_string_raw_v() == expected);
 }
-void reamber_base_test::lib_create_copies_sub_by_hit_object_delay() {
+void reamber_base_test::lib_copy_sub_by_hit_object_delay() {
     auto copies = amber_f::copy_subd_by(
                 &mocks.hit_object_multiple, 4, false);
 
@@ -444,7 +444,7 @@ void reamber_base_test::lib_create_copies_sub_by_hit_object_delay() {
     QVERIFY(copies->get_string_raw_v() == expected);
 
 }
-void reamber_base_test::lib_create_copies_sub_to_hit_object() {
+void reamber_base_test::lib_copy_sub_to_hit_object() {
     // EXCLUDE
     auto copies = amber_f::copy_subd_to<hit_object>
             (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 50, false);
@@ -486,7 +486,7 @@ void reamber_base_test::lib_create_copies_sub_to_hit_object() {
 
     QVERIFY(copies->get_string_raw_v() == expected);
 }
-void reamber_base_test::lib_create_copies_sub_to_hit_object_delay() {
+void reamber_base_test::lib_copy_sub_to_hit_object_delay() {
     auto copies = amber_f::copy_subd_to(
                 &mocks.hit_object_multiple, 250, false);
 
@@ -520,7 +520,7 @@ void reamber_base_test::lib_create_copies_sub_to_hit_object_delay() {
 
 }
 
-void reamber_base_test::lib_create_copies_reldiff() {
+void reamber_base_test::lib_copy_reldiff() {
     auto copies = amber_f::copy_rel(
                 std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, false);
 
@@ -540,7 +540,7 @@ void reamber_base_test::lib_create_copies_reldiff() {
     QVERIFY(copies->get_string_raw_v() == expected);
 }
 
-void reamber_base_test::lib_create_copies_reldiff_delay() {
+void reamber_base_test::lib_copy_reldiff_delay() {
     auto copies = amber_f::copy_rel<hit_object>
             (&mocks.hit_object_multiple, 0.25, false);
 
@@ -565,7 +565,7 @@ void reamber_base_test::lib_create_copies_reldiff_delay() {
     QVERIFY(copies->get_string_raw_v() == expected);
 }
 
-void reamber_base_test::lib_create_copies_absdiff() {
+void reamber_base_test::lib_copy_absdiff() {
     // EXCLUDE
     auto copies = amber_f::copy_abs(
                 std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, false, true, false);
@@ -611,7 +611,7 @@ void reamber_base_test::lib_create_copies_absdiff() {
 
     QVERIFY(copies->get_string_raw_v() == expected);
 }
-void reamber_base_test::lib_create_copies_absdiff_delay() {
+void reamber_base_test::lib_copy_absdiff_delay() {
     // EXCLUDE
     auto copies = amber_f::copy_abs<hit_object>
             (&mocks.hit_object_multiple, 15, false, true, true);
