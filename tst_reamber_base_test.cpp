@@ -3,89 +3,100 @@
 // add necessary includes here
 #include <iostream>
 #include <vector>
-#include <amber_f/amber_f.h>
+#include <algorithm/algorithm.h>
+#include <object/singular/hitobject.h>
+#include <object/singular/timingpoint.h>
 #include <QDebug>
+#include <QSharedPointer>
 
 class mock_objects {
 public:
     mock_objects() {
 
-        hit_object_note.load_parameters(
-            0, 192, 1000, 1, osu_object::sample_set::AUTO, 0,
-            osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-            osu_object::sample_set::AUTO, 50, "hitsound.wav", 4);
-        hit_object_long_note.load_parameters(
-            0, 192, 1000, 1, osu_object::sample_set::AUTO, 1500,
-            osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-            osu_object::sample_set::AUTO, 50, "hitsound.wav", 4);
+        hoNote.loadParameters(
+            0, 192, 1000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+            OsuObject::SAMPLE_SET::AUTO, 50, "hitsound.wav", 4);
+        hoLongNote.loadParameters(
+            0, 192, 1000, HitObject::LN, OsuObject::SAMPLE_SET::AUTO, 1500,
+            OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+            OsuObject::SAMPLE_SET::AUTO, 50, "hitsound.wav", 4);
 
-        timing_point_sv.load_parameters(
-            1000, 2, 4, osu_object::sample_set::AUTO, 0, 50, false, false
+        tpSv.loadParameters(
+            1000, 2, 4, OsuObject::SAMPLE_SET::AUTO, 0, 50, false, false
         );
-        timing_point_bpm.load_parameters(
-            1000, 300, 4, osu_object::sample_set::AUTO, 0, 50, true, false
+        tpBpm.loadParameters(
+            1000, 300, 4, OsuObject::SAMPLE_SET::AUTO, 0, 50, true, false
         );
 
-        editor_hit_object_singular.load_parameters(1, 1000, 0, 4);
+        eHOSingular.loadParameters(1, 1000, 0, 4);
 
-        editor_hit_object_multiple[0].load_parameters(1, 1000, 0, 4);
-        editor_hit_object_multiple[1].load_parameters(2, 2000, 0, 4);
+        eHOMutliple[0].loadParameters(1, 1000, 0, 4);
+        eHOMutliple[1].loadParameters(2, 2000, 0, 4);
 
-        hit_object_multiple[0].load_parameters(
-            0, 192, 1000, hit_object::NORMAL, osu_object::sample_set::AUTO, 0,
-            osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-            osu_object::sample_set::AUTO, 40, "hit1.wav", 4);
-        hit_object_multiple[1].load_parameters(
-            2, 192, 2000, hit_object::LN, osu_object::sample_set::AUTO, 2500,
-            osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-            osu_object::sample_set::AUTO, 50, "hit2.wav", 4);
-        hit_object_multiple[2].load_parameters(
-            3, 192, 3000, hit_object::NORMAL, osu_object::sample_set::AUTO, 0,
-            osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-            osu_object::sample_set::AUTO, 60, "hit3.wav", 4);
+        hoMultiple[0].loadParameters(
+            0, 192, 1000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+            OsuObject::SAMPLE_SET::AUTO, 40, "hit1.wav", 4);
+        hoMultiple[1].loadParameters(
+            2, 192, 2000, HitObject::LN, OsuObject::SAMPLE_SET::AUTO, 2500,
+            OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+            OsuObject::SAMPLE_SET::AUTO, 50, "hit2.wav", 4);
+        hoMultiple[2].loadParameters(
+            3, 192, 3000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+            OsuObject::SAMPLE_SET::AUTO, 60, "hit3.wav", 4);
 
-        timing_point_multiple[0].load_parameters(
-            0, 400, 4, osu_object::sample_set::NORMAL, 1, 50, true, false
+        tpMultiple[0].loadParameters(
+            0, 400, 4, OsuObject::SAMPLE_SET::NORMAL, 1, 50, true, false
         );
-        timing_point_multiple[1].load_parameters(
-            1000, 2, 4, osu_object::sample_set::NORMAL, 1, 50, false, true
+        tpMultiple[1].loadParameters(
+            1000, 2, 4, OsuObject::SAMPLE_SET::NORMAL, 1, 50, false, true
         );
-        timing_point_multiple[2].load_parameters(
-            2000, 0.5, 4, osu_object::sample_set::NORMAL, 1, 50, false, false
+        tpMultiple[2].loadParameters(
+            2000, 0.5, 4, OsuObject::SAMPLE_SET::NORMAL, 1, 50, false, false
         );
+
+        pEHOMutliple = QSPtr<HitObjectV>::create(eHOMutliple);
+        pHOMultiple = QSPtr<HitObjectV>::create(hoMultiple);
+        pTPMultiple = QSPtr<TimingPointV>::create(tpMultiple);
 
     }
-    std::string raw_hit_object_str_note =
+    QString rawHOStrNote =
         "64,192,1000,1,0,0:0:0:50:hitsound.wav";
-    std::string raw_hit_object_str_long_note =
+    QString rawHOStrLongNote =
         "64,192,1000,128,0,1500:0:0:0:50:hitsound.wav";
-    std::string raw_timing_point_sv =
+    QString rawTPSv =
         "1000,-50,4,0,0,50,0,0";
-    std::string raw_timing_point_bpm =
+    QString rawTPBpm =
         "1000,200,4,0,0,50,1,0";
-    std::string editor_hit_object_str_singular =
+    QString eHOStrSingular =
         "00:01:000 (1000|1) -";
-    std::string editor_hit_object_str_multiple =
+    QString eHOStrMultiple =
         "00:01:000 (1000|1,2000|2) -";
 
-    std::string raw_hit_object_str_multiple =
+    QString rawHOStrMultiple =
         "64,192,1000,1,0,0:0:0:40:hit1.wav\n" // N
         "320,192,2000,128,0,2500:0:0:0:70:hit2.wav\n" // LN
         "448,192,3000,1,0,0:0:0:60:hit3.wav"; // N
 
-    std::string raw_timing_point_str_multiple =
+    QString rawTPStrMultiple =
         "0,150,4,1,1,50,1,0\n" // BPM 400
         "1000,-50,4,1,1,50,0,1\n" // SV 2.0 Kiai
         "2000,-200,4,1,1,50,0,0"; // SV 0.50
 
-    hit_object hit_object_note;
-    hit_object hit_object_long_note;
-    timing_point timing_point_sv;
-    timing_point timing_point_bpm;
-    hit_object editor_hit_object_singular;
-    hit_object_v editor_hit_object_multiple = hit_object_v(2);
-    hit_object_v hit_object_multiple = hit_object_v(3);
-    timing_point_v timing_point_multiple = timing_point_v(3);
+    HitObject hoNote;
+    HitObject hoLongNote;
+    TimingPoint tpSv;
+    TimingPoint tpBpm;
+    HitObject eHOSingular;
+    HitObjectV eHOMutliple = HitObjectV(2);
+    HitObjectV hoMultiple = HitObjectV(3);
+    TimingPointV tpMultiple = TimingPointV(3);
+
+    QSPtr<HitObjectV>   pEHOMutliple;
+    QSPtr<HitObjectV>   pHOMultiple ;
+    QSPtr<TimingPointV> pTPMultiple ;
 
 };
 
@@ -93,44 +104,43 @@ class reamber_base_test : public QObject
 {
     Q_OBJECT
 
-
 private slots:
-    void trim_editor_hit_object();
-    void hit_object_raw_loading();
-    void timing_point_raw_load();
-    void hit_object_editor_loading();
-    void hit_object_v_raw_loading();
-    void timing_point_v_raw_loading();
-    void hit_object_v_editor_loading();
+    void trim_editor_HitObject();
+    void HitObject_raw_loading();
+    void TimingPoint_raw_load();
+    void HitObject_editor_loading();
+    void HitObjectV_raw_loading();
+    void TimingPointV_raw_loading();
+    void HitObjectV_editor_loading();
 
-    void fobo_hit_object();
-    void fobo_timing_point();
-    void lobo_hit_object();
-    void lobo_timing_point();
+    void fobo_HitObject();
+    void fobo_TimingPoint();
+    void lobo_HitObject();
+    void lobo_TimingPoint();
 
     void get_column_v();
-    void get_offset_min_hit_object();
-    void get_offset_max_hit_object();
-    void get_offset_min_timing_point();
-    void get_offset_max_timing_point();
+    void get_offset_min_HitObject();
+    void get_offset_max_HitObject();
+    void get_offset_min_TimingPoint();
+    void get_offset_max_TimingPoint();
 
-    void sort_by_offset_hit_object();
-    void sort_by_offset_timing_point();
+    void sort_by_offset_HitObject();
+    void sort_by_offset_TimingPoint();
 
-    void timing_point_v_multiply();
-    void timing_point_v_get_ave();
+    void TimingPointV_multiply();
+    void TimingPointV_get_ave();
 
-    void timing_point_v_arithmetic();
+    void TimingPointV_arithmetic();
 
     void lib_offset_diff();
-    void lib_copy_singular_hit_object();
-    void lib_copy_multiple_hit_object();
-    void lib_copy_singular_timing_point();
-    void lib_copy_multiple_timing_point();
-    void lib_copy_sub_by_hit_object();
-    void lib_copy_sub_by_hit_object_delay();
-    void lib_copy_sub_to_hit_object();
-    void lib_copy_sub_to_hit_object_delay();
+    void lib_copy_singular_HitObject();
+    void lib_copy_multiple_HitObject();
+    void lib_copy_singular_TimingPoint();
+    void lib_copy_multiple_TimingPoint();
+    void lib_copy_sub_by_HitObject();
+    void lib_copy_sub_by_HitObject_delay();
+    void lib_copy_sub_to_HitObject();
+    void lib_copy_sub_to_HitObject_delay();
     void lib_copy_reldiff();
     void lib_copy_reldiff_delay();
     void lib_copy_absdiff();
@@ -147,253 +157,248 @@ private:
 
 };
 
-void reamber_base_test::trim_editor_hit_object() {
+void reamber_base_test::trim_editor_HitObject() {
 
-    std::string str = mocks.editor_hit_object_str_multiple;
-    hit_object::trim_editor_hit_object(str);
-    QVERIFY(std::string("1000|1,2000|2") == str);
+    QString str = mocks.eHOStrMultiple;
+    HitObject::trimEditorHitObject(str);
+    QVERIFY(QString("1000|1,2000|2") == str);
 }
-void reamber_base_test::hit_object_raw_loading()
+void reamber_base_test::HitObject_raw_loading()
 {
-    hit_object ho;
-    ho.load_raw_hit_object(mocks.raw_hit_object_str_note, 4);
+    HitObject ho;
+    ho.loadRawHitObject(mocks.rawHOStrNote, 4);
 
-    QVERIFY(ho == mocks.hit_object_note);
+    QVERIFY(ho == mocks.hoNote);
 }
-void reamber_base_test::timing_point_raw_load()
+void reamber_base_test::TimingPoint_raw_load()
 {
-    timing_point tp;
-    tp.load_raw_timing_point(mocks.raw_timing_point_bpm);
+    TimingPoint tp;
+    tp.loadRawTimingPoint(mocks.rawTPBpm);
 
-    QVERIFY(tp == mocks.timing_point_bpm);
+    QVERIFY(tp == mocks.tpBpm);
 }
-void reamber_base_test::hit_object_editor_loading()
+void reamber_base_test::HitObject_editor_loading()
 {
-    hit_object ho;
-    std::string load_str = "00:01:000 (1000|0) - ";
-    ho.load_editor_hit_object(load_str, 4);
+    HitObject ho;
+    QString load_str = "00:01:000 (1000|0) - ";
+    ho.loadEditorHitObject(load_str, 4);
 
-    hit_object ho_expected;
-    ho_expected.load_parameters(
-                0, 192, 1000, 1, osu_object::sample_set::AUTO,
-                0, osu_object::sample_set::AUTO, osu_object::sample_set::AUTO,
-                osu_object::sample_set::AUTO, 50, "", 4);
+    HitObject ho_expected;
+    ho_expected.loadParameters(
+                0, 192, 1000, HitObject::NOTE_TYPE::NORMAL, OsuObject::SAMPLE_SET::AUTO,
+                0, OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
+                OsuObject::SAMPLE_SET::AUTO, 50, "", 4);
 
     QVERIFY(ho_expected == ho);
 
 }
 
-void reamber_base_test::hit_object_v_raw_loading() {
-    hit_object_v ho_v;
-    ho_v.load_raw_hit_object(mocks.raw_hit_object_str_multiple, 4);
+void reamber_base_test::HitObjectV_raw_loading() {
+    HitObjectV ho_v;
+    ho_v.loadRawHitObject(mocks.rawHOStrMultiple, 4);
 
-    QVERIFY(ho_v == mocks.hit_object_multiple);
+    QVERIFY(ho_v == mocks.hoMultiple);
 }
-void reamber_base_test::timing_point_v_raw_loading() {
-    timing_point_v tp_v;
-    tp_v.load_raw_timing_point(mocks.raw_timing_point_str_multiple);
+void reamber_base_test::TimingPointV_raw_loading() {
+    TimingPointV tp_v;
+    tp_v.loadRawTimingPoint(mocks.rawTPStrMultiple);
 
-    QVERIFY(tp_v == mocks.timing_point_multiple);
+    QVERIFY(tp_v == mocks.tpMultiple);
 }
-void reamber_base_test::hit_object_v_editor_loading() {
-    hit_object_v ho_v;
-    qDebug() << ho_v.load_editor_hit_object(mocks.editor_hit_object_str_multiple, 4);
+void reamber_base_test::HitObjectV_editor_loading() {
+    HitObjectV ho_v;
+    qDebug() << ho_v.loadEditorHitObject(mocks.eHOStrMultiple, 4);
 
-    QVERIFY(ho_v == mocks.editor_hit_object_multiple);
+    QVERIFY(ho_v == mocks.eHOMutliple);
 }
 
 // FOBO: First Object By Offset
 // LOBO: Last  Object By Offset
-void reamber_base_test::fobo_hit_object()
+void reamber_base_test::fobo_HitObject()
 {
     QVERIFY(
-                mocks.hit_object_multiple[0] == // Expect the first object
-            mocks.hit_object_multiple.get_first_object_by_offset()
+                mocks.hoMultiple[0] == // Expect the first object
+            mocks.hoMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::fobo_timing_point()
+void reamber_base_test::fobo_TimingPoint()
 {
     QVERIFY(
-                mocks.timing_point_multiple[0] == // Expect the first object
-            mocks.timing_point_multiple.get_first_object_by_offset()
+                mocks.tpMultiple[0] == // Expect the first object
+            mocks.tpMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::lobo_hit_object()
+void reamber_base_test::lobo_HitObject()
 {
     QVERIFY(
-                mocks.hit_object_multiple[2] == // Expect the first object
-            mocks.hit_object_multiple.get_last_object_by_offset()
+                mocks.hoMultiple[2] == // Expect the first object
+            mocks.hoMultiple.getLastObjectByOffset()
             );
 }
-void reamber_base_test::lobo_timing_point()
+void reamber_base_test::lobo_TimingPoint()
 {
     QVERIFY(
-                mocks.timing_point_multiple[2] == // Expect the first object
-            mocks.timing_point_multiple.get_last_object_by_offset()
+                mocks.tpMultiple[2] == // Expect the first object
+            mocks.tpMultiple.getLastObjectByOffset()
             );
 }
 
 void reamber_base_test::get_column_v() {
-    QVERIFY((mocks.hit_object_multiple.get_column_v() ==
-            std::vector<unsigned int>{0, 2, 3}));
+    QVERIFY((mocks.hoMultiple.getColumnV() ==
+            QVector<unsigned int>{0, 2, 3}));
 }
-void reamber_base_test::get_offset_min_hit_object() {
-    QVERIFY(mocks.hit_object_multiple.get_offset_min() == 1000.0);
+void reamber_base_test::get_offset_min_HitObject() {
+    QVERIFY(mocks.hoMultiple.getOffsetMin() == 1000.0);
 }
-void reamber_base_test::get_offset_max_hit_object() {
-    QVERIFY(mocks.hit_object_multiple.get_offset_max() == 3000.0);
+void reamber_base_test::get_offset_max_HitObject() {
+    QVERIFY(mocks.hoMultiple.getOffsetMax() == 3000.0);
 }
-void reamber_base_test::get_offset_min_timing_point() {
-    QVERIFY(mocks.timing_point_multiple.get_offset_min() == 0.0);
+void reamber_base_test::get_offset_min_TimingPoint() {
+    QVERIFY(mocks.tpMultiple.getOffsetMin() == 0.0);
 }
-void reamber_base_test::get_offset_max_timing_point() {
-    QVERIFY(mocks.timing_point_multiple.get_offset_max() == 2000.0);
+void reamber_base_test::get_offset_max_TimingPoint() {
+    QVERIFY(mocks.tpMultiple.getOffsetMax() == 2000.0);
 }
 
-void reamber_base_test::sort_by_offset_hit_object() {
-    hit_object_v ho_v = mocks.hit_object_multiple;
+void reamber_base_test::sort_by_offset_HitObject() {
+    HitObjectV ho_v = mocks.hoMultiple;
 
     // Manually sort by descending
-    hit_object_v ho_v_sort_desc = hit_object_v(3);
+    HitObjectV ho_v_sort_desc = HitObjectV(3);
     ho_v_sort_desc[0] = ho_v[2];
     ho_v_sort_desc[1] = ho_v[1];
     ho_v_sort_desc[2] = ho_v[0];
 
     // Sort by Descending
-    ho_v.sort_by_offset(false);
+    ho_v.sortByOffset(false);
 
     QVERIFY(ho_v == ho_v_sort_desc);
 }
-void reamber_base_test::sort_by_offset_timing_point() {
-    timing_point_v tp_v = mocks.timing_point_multiple;
+void reamber_base_test::sort_by_offset_TimingPoint() {
+    TimingPointV tp_v = mocks.tpMultiple;
 
     // Manually sort by descending
-    timing_point_v tp_v_sort_desc = timing_point_v(3);
+    TimingPointV tp_v_sort_desc = TimingPointV(3);
     tp_v_sort_desc[0] = tp_v[2];
     tp_v_sort_desc[1] = tp_v[1];
     tp_v_sort_desc[2] = tp_v[0];
 
     // Sort by Descending
-    tp_v.sort_by_offset(false);
+    tp_v.sortByOffset(false);
 
     QVERIFY(tp_v == tp_v_sort_desc);
 }
 
-void reamber_base_test::timing_point_v_multiply() {
+void reamber_base_test::TimingPointV_multiply() {
     //        [0] [1] [2] [3] [4]
     // SELF :  1   1           1
     // EFF  :  1       1   1
-    timing_point_v tp_v(4);
+    TimingPointV tp_v(4);
 
-    tp_v[0].load_parameters(0, 1, false);
-    tp_v[1].load_parameters(1, 2, false);
-    tp_v[2].load_parameters(4, 4, false);
-    tp_v[3].load_parameters(5, 8, false);
-    timing_point_v tp_v_eff(3);
+    tp_v[0].loadParameters(0, 1, false);
+    tp_v[1].loadParameters(1, 2, false);
+    tp_v[2].loadParameters(4, 4, false);
+    tp_v[3].loadParameters(5, 8, false);
+    TimingPointV tp_v_eff(3);
 
-    tp_v_eff[0].load_parameters(0, 1, false);
-    tp_v_eff[1].load_parameters(2, 0.5, false);
-    tp_v_eff[2].load_parameters(3, 0.25, false);
+    tp_v_eff[0].loadParameters(0, 1, false);
+    tp_v_eff[1].loadParameters(2, 0.5, false);
+    tp_v_eff[2].loadParameters(3, 0.25, false);
 
-    tp_v.cross_effect_multiply(tp_v_eff);
+    tp_v.crossEffectMultiply(tp_v_eff);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "0.000000,-100.000000,4,0,0,25,0,0",
         "1.000000,-50.000000,4,0,0,25,0,0",
         "4.000000,-100.000000,4,0,0,25,0,0",
         "5.000000,-50.000000,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
-void reamber_base_test::timing_point_v_get_ave() {
+void reamber_base_test::TimingPointV_get_ave() {
     // SV
-    timing_point_v tp_v = timing_point_v(3);
-    tp_v[0].load_parameters(0, 1.5, false);
-    tp_v[1].load_parameters(100, 0.5, false);
-    tp_v[2].load_parameters(400, 1.75, false);
+    TimingPointV tp_v = TimingPointV(3);
+    tp_v[0].loadParameters(0, 1.5, false);
+    tp_v[1].loadParameters(100, 0.5, false);
+    tp_v[2].loadParameters(400, 1.75, false);
 
-    QVERIFY(0.75 == tp_v.get_average_sv_value());
+    QVERIFY(0.75 == tp_v.getAverageSvValue());
 
     // BPM
-    tp_v = timing_point_v(3);
-    tp_v[0].load_parameters(0, 200, true);
-    tp_v[1].load_parameters(100, 100, true);
-    tp_v[2].load_parameters(400, 150, true);
+    tp_v = TimingPointV(3);
+    tp_v[0].loadParameters(0, 200, true);
+    tp_v[1].loadParameters(100, 100, true);
+    tp_v[2].loadParameters(400, 150, true);
 
-    QVERIFY(125.0 == tp_v.get_average_bpm_value());
+    QVERIFY(125.0 == tp_v.getAverageBpmValue());
 
     // MIXED
-    tp_v = timing_point_v(4);
-    tp_v[0].load_parameters(0, 200, true);
-    tp_v[1].load_parameters(50, 0.5, false); // JUNK SV
-    tp_v[2].load_parameters(100, 100, true);
-    tp_v[3].load_parameters(400, 150, true);
+    tp_v = TimingPointV(4);
+    tp_v[0].loadParameters(0, 200, true);
+    tp_v[1].loadParameters(50, 0.5, false); // JUNK SV
+    tp_v[2].loadParameters(100, 100, true);
+    tp_v[3].loadParameters(400, 150, true);
 
-    QVERIFY(125.0 == tp_v.get_average_bpm_value());
+    QVERIFY(125.0 == tp_v.getAverageBpmValue());
 }
 
-void reamber_base_test::timing_point_v_arithmetic()
+void reamber_base_test::TimingPointV_arithmetic()
 {
     // +
-    timing_point_v tp_v = timing_point_v(3);
-    tp_v[0].load_parameters(0, 1.5, false);
-    tp_v[1].load_parameters(100, 0.5, false);
-    tp_v[2].load_parameters(400, 1.75, false);
+    TimingPointV tp_v = TimingPointV(3);
+    tp_v[0].loadParameters(0, 1.5, false);
+    tp_v[1].loadParameters(100, 0.5, false);
+    tp_v[2].loadParameters(400, 1.75, false);
 
     tp_v += 2;
 
     for (auto tp : tp_v) {
-        qDebug() << tp.get_string_raw().c_str();
+        qDebug() << tp.getStringRaw().toStdString().c_str();
     }
 
     QVERIFY(true);
 }
 
 void reamber_base_test::lib_offset_diff() {
-    auto offset_difference =
-            amber_f::offset_diff<hit_object>(&mocks.hit_object_multiple);
-    QVERIFY(offset_difference == std::vector<double>({1000, 1000}));
+    auto offsetDifference = algorithm::offsetDiff<HitObject>(mocks.pHOMultiple);
+    QVERIFY(offsetDifference == QVector<double>({1000, 1000}));
 }
-void reamber_base_test::lib_copy_singular_hit_object() {
-    auto copies = amber_f::copy<hit_object>
-            (mocks.hit_object_note, std::vector<double>{1000, 2000});
-    QVERIFY(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
+void reamber_base_test::lib_copy_singular_HitObject() {
+    auto copies = algorithm::copy<HitObject>(mocks.hoNote, QVector<double>{1000, 2000});
+    QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::lib_copy_multiple_hit_object() {
-    auto copies = amber_f::copy<hit_object>
-            (&mocks.hit_object_multiple, std::vector<double>{1000, 2000});
+void reamber_base_test::lib_copy_multiple_HitObject() {
+    auto copies = algorithm::copy<HitObject>(mocks.pHOMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
-    QVERIFY(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
+    QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::lib_copy_singular_timing_point() {
-    auto copies = amber_f::copy<timing_point>
-            (mocks.timing_point_sv, std::vector<double>{1000, 2000});
-    QVERIFY(std::vector<double>({ 1000,2000 }) == copies->get_offset_v(false));
+void reamber_base_test::lib_copy_singular_TimingPoint() {
+    auto copies = algorithm::copy<TimingPoint>(mocks.tpSv, QVector<double>{1000, 2000});
+    QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::lib_copy_multiple_timing_point() {
-    auto copies = amber_f::copy<timing_point>
-            (&mocks.timing_point_multiple, std::vector<double>{1000, 2000});
+void reamber_base_test::lib_copy_multiple_TimingPoint() {
+    auto copies = algorithm::copy<TimingPoint>(mocks.pTPMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
-    QVERIFY(std::vector<double>({ 1000,2000,3000,4000 }) == copies->get_offset_v(true));
+    QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::lib_copy_sub_by_hit_object() {
+void reamber_base_test::lib_copy_sub_by_HitObject() {
     // EXCLUDE
-    auto copies = amber_f::copy_subd_by<hit_object>
-            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 2, false);
+    auto copies = algorithm::copySubdBy<HitObject>
+            (QVector<double>({ 100,300,500 }), mocks.hoNote, 2, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,166.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
         "64,192,233.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
         "64,192,366.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
         "64,192,433.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // INCLUDE
-    copies = amber_f::copy_subd_by<hit_object>
-            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 2, true);
+    copies = algorithm::copySubdBy<HitObject>
+            (QVector<double>({ 100,300,500 }), mocks.hoNote, 2, true);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
@@ -405,13 +410,12 @@ void reamber_base_test::lib_copy_sub_by_hit_object() {
         "64,192,500.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 0
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_copy_sub_by_hit_object_delay() {
-    auto copies = amber_f::copy_subd_by(
-                &mocks.hit_object_multiple, 4, false);
+void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
+    auto copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
@@ -422,10 +426,9 @@ void reamber_base_test::lib_copy_sub_by_hit_object_delay() {
         "320,192,2800.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
-    copies = amber_f::copy_subd_by(
-                &mocks.hit_object_multiple, 4, true);
+    copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -441,15 +444,15 @@ void reamber_base_test::lib_copy_sub_by_hit_object_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
 }
-void reamber_base_test::lib_copy_sub_to_hit_object() {
+void reamber_base_test::lib_copy_sub_to_HitObject() {
     // EXCLUDE
-    auto copies = amber_f::copy_subd_to<hit_object>
-            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 50, false);
+    auto copies = algorithm::copySubdTo<HitObject>
+            (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,150.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
         "64,192,200.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
         "64,192,250.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
@@ -458,15 +461,15 @@ void reamber_base_test::lib_copy_sub_to_hit_object() {
         "64,192,450.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 3
     };
 
-    for (auto ho : *copies) {
-        qDebug() << ho.get_string_raw().c_str();
+    for (auto ho : copies) {
+        qDebug() << ho.getStringRaw().toStdString().c_str();
     }
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // INCLUDE
-    copies = amber_f::copy_subd_to<hit_object>
-            (std::vector<double>({ 100,300,500 }), mocks.hit_object_note, 50, true);
+    copies = algorithm::copySubdTo<HitObject>
+            (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, true);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
@@ -480,17 +483,16 @@ void reamber_base_test::lib_copy_sub_to_hit_object() {
         "64,192,500.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 0
     };
 
-    for (auto ho : *copies) {
-        qDebug() << ho.get_string_raw().c_str();
+    for (auto ho : copies) {
+        qDebug() << ho.getStringRaw().toStdString().c_str();
     }
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_copy_sub_to_hit_object_delay() {
-    auto copies = amber_f::copy_subd_to(
-                &mocks.hit_object_multiple, 250, false);
+void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
+    auto copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
         "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
@@ -499,10 +501,9 @@ void reamber_base_test::lib_copy_sub_to_hit_object_delay() {
         "320,192,2750.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
-    copies = amber_f::copy_subd_to(
-                &mocks.hit_object_multiple, 250, true);
+    copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -516,43 +517,43 @@ void reamber_base_test::lib_copy_sub_to_hit_object_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
 }
 
 void reamber_base_test::lib_copy_reldiff() {
-    auto copies = amber_f::copy_rel(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, false);
+    auto copies = algorithm::copyRel(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
     };
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
-    copies = amber_f::copy_rel(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 0.25, true);
+    copies = algorithm::copyRel(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, true);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
         "64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
         "64,192,300.000000,1,0,0:0:0:50:hitsound.wav",
     };
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
 
 void reamber_base_test::lib_copy_reldiff_delay() {
-    auto copies = amber_f::copy_rel<hit_object>
-            (&mocks.hit_object_multiple, 0.25, false);
+    auto copies = algorithm::copyRel<HitObject>
+            (mocks.pHOMultiple, 0.25, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
         "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
-    copies = amber_f::copy_rel<hit_object>
-            (&mocks.hit_object_multiple, 0.25, true);
+    copies = algorithm::copyRel<HitObject>
+            (mocks.pHOMultiple, 0.25, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -562,23 +563,23 @@ void reamber_base_test::lib_copy_reldiff_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
 
 void reamber_base_test::lib_copy_absdiff() {
     // EXCLUDE
-    auto copies = amber_f::copy_abs(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, false, true, false);
+    auto copies = algorithm::copyAbs(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 50, false, true, false);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,150.000000,1,0,0:0:0:50:hitsound.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // EXCLUDE
-    copies = amber_f::copy_abs(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, true, true, false);
+    copies = algorithm::copyAbs(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, true, false);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
@@ -586,22 +587,22 @@ void reamber_base_test::lib_copy_absdiff() {
         "64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // EXCLUDE OVERLAP
-    copies = amber_f::copy_abs(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 250, true, true, true);
+    copies = algorithm::copyAbs(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 250, true, true, true);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
         "64,192,300.000000,1,0,0:0:0:50:hitsound.wav",
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // FROM THE BACK
-    copies = amber_f::copy_abs(
-                std::vector<double>({ 100, 300 }), mocks.hit_object_note, 50, true, false, true);
+    copies = algorithm::copyAbs(
+                QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, false, true);
 
     expected = {
         "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
@@ -609,22 +610,22 @@ void reamber_base_test::lib_copy_absdiff() {
         "64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
 void reamber_base_test::lib_copy_absdiff_delay() {
     // EXCLUDE
-    auto copies = amber_f::copy_abs<hit_object>
-            (&mocks.hit_object_multiple, 15, false, true, true);
+    auto copies = algorithm::copyAbs<HitObject>
+            (mocks.pHOMultiple, 15, false, true, true);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
         "320,192,2015.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
     };
 
     // INCLUDE
-    QVERIFY(copies->get_string_raw_v() == expected);
-    copies = amber_f::copy_abs<hit_object>
-            (&mocks.hit_object_multiple, 15, true, true, true);
+    QVERIFY(copies.getStringRawV() == expected);
+    copies = algorithm::copyAbs<HitObject>
+            (mocks.pHOMultiple, 15, true, true, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -634,12 +635,12 @@ void reamber_base_test::lib_copy_absdiff_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // EXCLUDE OVERLAP
-    QVERIFY(copies->get_string_raw_v() == expected);
-    copies = amber_f::copy_abs<hit_object>
-            (&mocks.hit_object_multiple, 2000, true, true, true);
+    QVERIFY(copies.getStringRawV() == expected);
+    copies = algorithm::copyAbs<HitObject>
+            (mocks.pHOMultiple, 2000, true, true, true);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -647,12 +648,12 @@ void reamber_base_test::lib_copy_absdiff_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 
     // EXCLUDE OVERLAP
-    QVERIFY(copies->get_string_raw_v() == expected);
-    copies = amber_f::copy_abs<hit_object>
-            (&mocks.hit_object_multiple, 100, true, false, false);
+    QVERIFY(copies.getStringRawV() == expected);
+    copies = algorithm::copyAbs<HitObject>
+            (mocks.pHOMultiple, 100, true, false, false);
 
     expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
@@ -662,21 +663,21 @@ void reamber_base_test::lib_copy_absdiff_delay() {
         "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
     };
 
-    QVERIFY(copies->get_string_raw_v() == expected);
+    QVERIFY(copies.getStringRawV() == expected);
 }
 void reamber_base_test::lib_normalize() {
-    auto normalized = amber_f::normalize(mocks.timing_point_multiple, 200, false);
-    std::vector<std::string> expected = {
+    auto normalized = algorithm::normalize(mocks.tpMultiple, 200, false);
+    QVector<QString> expected = {
         "0.000000,-200.000000,4,1,1,50,0,0"
     };
 
-    QVERIFY(normalized.get_string_raw_v() == expected);
+    QVERIFY(normalized.getStringRawV() == expected);
 }
 void reamber_base_test::lib_create_stutter_relative() {
     // SV
-    auto tp_v = amber_f::stutter_rel(std::vector<double>({ 100,300,700 }), 1.5, 0.25);
+    auto tp_v = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 1.5, 0.25);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "100.000000,-66.666667,4,0,0,25,0,0",
         "150.000000,-120.000000,4,0,0,25,0,0",
         "300.000000,-66.666667,4,0,0,25,0,0",
@@ -684,10 +685,10 @@ void reamber_base_test::lib_create_stutter_relative() {
         "700.000000,-100.000000,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 
     // BPM
-    tp_v = amber_f::stutter_rel(std::vector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
+    tp_v = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
 
     expected = {
         "100.000000,150.000000,4,0,0,25,1,0",
@@ -697,13 +698,13 @@ void reamber_base_test::lib_create_stutter_relative() {
         "700.000000,300.000000,4,0,0,25,1,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
 void reamber_base_test::lib_create_stutter_absolute() {
     // SV
-    auto tp_v = amber_f::stutter_abs(std::vector<double>({ 100,300,700 }), 1.5, 100, 1.0);
+    auto tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 1.5, 100, 1.0);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "100.000000,-66.666667,4,0,0,25,0,0",
         "200.000000,-200.000000,4,0,0,25,0,0",
         "300.000000,-66.666667,4,0,0,25,0,0",
@@ -711,10 +712,10 @@ void reamber_base_test::lib_create_stutter_absolute() {
         "700.000000,-100.000000,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 
     // BPM
-    tp_v = amber_f::stutter_abs(std::vector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
+    tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
 
     expected = {
         "100.000000,400.000000,4,0,0,25,1,0",
@@ -724,60 +725,60 @@ void reamber_base_test::lib_create_stutter_absolute() {
         "700.000000,600.000000,4,0,0,25,1,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
 
 void reamber_base_test::lib_create_stutter_from_offset() {
-    auto tp_v = amber_f::stutter(std::vector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
-    std::vector<std::string> expected = {
+    auto tp_v = algorithm::stutter(QVector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
+    QVector<QString> expected = {
         "100.000000,-66.666667,4,0,0,25,0,0",
         "400.000000,-200.000000,4,0,0,25,0,0",
         "700.000000,-100.000000,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
 
 void reamber_base_test::lib_delete_nth() {
     // HO
-    auto ho_v = amber_f::delete_nth(&mocks.hit_object_multiple, 2, 1);
+    auto ho_v = algorithm::deleteNth<HitObject>(mocks.pHOMultiple, 2, 1);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
         "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
     };
 
-    QVERIFY(ho_v->get_string_raw_v() == expected);
+    QVERIFY(ho_v.getStringRawV() == expected);
 
     // TP
-    auto tp_v = amber_f::delete_nth(&mocks.timing_point_multiple, 2, 1);
+    auto tp_v = algorithm::deleteNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
 
     expected = {
         "0.000000,150.000000,4,1,1,50,1,0",
         "1000.000000,-50.000000,4,1,1,50,0,1"
     };
 
-    QVERIFY(tp_v->get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
 void reamber_base_test::lib_extract_nth() {
     // HO
-    auto ho_v = amber_f::extract_nth(&mocks.hit_object_multiple, 2, 1);
+    auto ho_v = algorithm::extractNth<HitObject>(mocks.pHOMultiple, 2, 1);
 
-    std::vector<std::string> expected = {
+    QVector<QString> expected = {
         "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
     };
 
-    QVERIFY(ho_v->get_string_raw_v() == expected);
+    QVERIFY(ho_v.getStringRawV() == expected);
 
 
     // TP
-    auto tp_v = amber_f::extract_nth(&mocks.timing_point_multiple, 2, 1);
+    auto tp_v = algorithm::extractNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
 
     expected = {
         "1000.000000,-50.000000,4,1,1,50,0,1"
     };
 
-    QVERIFY(tp_v->get_string_raw_v() == expected);
+    QVERIFY(tp_v.getStringRawV() == expected);
 }
 
 
