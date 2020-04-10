@@ -9,9 +9,9 @@
 #include <QDebug>
 #include <QSharedPointer>
 
-class mock_objects {
+class TestObjs {
 public:
-    mock_objects() {
+    TestObjs() {
 
         hoNote.loadParameters(
             0, 192, 1000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
@@ -105,79 +105,79 @@ class reamber_base_test : public QObject
     Q_OBJECT
 
 private slots:
-    void trim_editor_HitObject();
-    void HitObject_raw_loading();
-    void TimingPoint_raw_load();
-    void HitObject_editor_loading();
-    void HitObjectV_raw_loading();
-    void TimingPointV_raw_loading();
-    void HitObjectV_editor_loading();
+    void trimEHO();
+    void HitobjectRawLoading();
+    void TimingpointRawLoad();
+    void HitobjectEditorLoading();
+    void HitobjectvRawLoading();
+    void TimingpointvRawLoading();
+    void HitobjectvEditorLoading();
 
-    void fobo_HitObject();
-    void fobo_TimingPoint();
-    void lobo_HitObject();
-    void lobo_TimingPoint();
+    void foboHitobject();
+    void foboTimingpoint();
+    void loboHitobject();
+    void loboTimingpoint();
 
-    void get_column_v();
-    void get_offset_min_HitObject();
-    void get_offset_max_HitObject();
-    void get_offset_min_TimingPoint();
-    void get_offset_max_TimingPoint();
+    void getColumnV();
+    void getOffsetMinHitobject();
+    void getOffsetMaxHitobject();
+    void getOffsetMinTimingpoint();
+    void getOffsetMaxTimingpoint();
 
-    void sort_by_offset_HitObject();
-    void sort_by_offset_TimingPoint();
+    void sortByOffsetHitobject();
+    void sortByOffsetTimingpoint();
 
-    void TimingPointV_multiply();
-    void TimingPointV_get_ave();
+    void TimingpointvMultiply();
+    void TimingpointvGetAve();
 
-    void TimingPointV_arithmetic();
+    void TimingpointvArithmetic();
 
-    void lib_offset_diff();
-    void lib_copy_singular_HitObject();
-    void lib_copy_multiple_HitObject();
-    void lib_copy_singular_TimingPoint();
-    void lib_copy_multiple_TimingPoint();
-    void lib_copy_sub_by_HitObject();
-    void lib_copy_sub_by_HitObject_delay();
-    void lib_copy_sub_to_HitObject();
-    void lib_copy_sub_to_HitObject_delay();
-    void lib_copy_reldiff();
-    void lib_copy_reldiff_delay();
-    void lib_copy_absdiff();
-    void lib_copy_absdiff_delay();
-    void lib_normalize();
-    void lib_create_stutter_relative();
-    void lib_create_stutter_absolute();
-    void lib_create_stutter_from_offset();
-    void lib_extract_nth();
-    void lib_delete_nth();
+    void libOffsetDiff();
+    void libCopySingularHitobject();
+    void libCopyMultipleHitobject();
+    void libCopySingularTimingpoint();
+    void libCopyMultipleTimingpoint();
+    void libCopySubByHitobject();
+    void libCopySubByHitobjectDelay();
+    void libCopySubToHitobject();
+    void libCopySubToHitobjectDelay();
+    void libCopyReldiff();
+    void libCopyReldiffDelay();
+    void libCopyAbsdiff();
+    void libCopyAbsdiffDelay();
+    void libNormalize();
+    void libCreateStutterRelative();
+    void libCreateStutterAbsolute();
+    void libCreateStutterFromOffset();
+    void libExtractNth();
+    void libDeleteNth();
 
 private:
-    mock_objects mocks = mock_objects();
+    TestObjs tests = TestObjs();
 
 };
 
-void reamber_base_test::trim_editor_HitObject() {
+void reamber_base_test::trimEHO() {
 
-    QString str = mocks.eHOStrMultiple;
+    QString str = tests.eHOStrMultiple;
     HitObject::trimEditorHitObject(str);
     QVERIFY(QString("1000|1,2000|2") == str);
 }
-void reamber_base_test::HitObject_raw_loading()
+void reamber_base_test::HitobjectRawLoading()
 {
     HitObject ho;
-    ho.loadRawHitObject(mocks.rawHOStrNote, 4);
+    ho.loadRawHitObject(tests.rawHOStrNote, 4);
 
-    QVERIFY(ho == mocks.hoNote);
+    QVERIFY(ho == tests.hoNote);
 }
-void reamber_base_test::TimingPoint_raw_load()
+void reamber_base_test::TimingpointRawLoad()
 {
     TimingPoint tp;
-    tp.loadRawTimingPoint(mocks.rawTPBpm);
+    tp.loadRawTimingPoint(tests.rawTPBpm);
 
-    QVERIFY(tp == mocks.tpBpm);
+    QVERIFY(tp == tests.tpBpm);
 }
-void reamber_base_test::HitObject_editor_loading()
+void reamber_base_test::HitobjectEditorLoading()
 {
     HitObject ho;
     QString load_str = "00:01:000 (1000|0) - ";
@@ -193,75 +193,75 @@ void reamber_base_test::HitObject_editor_loading()
 
 }
 
-void reamber_base_test::HitObjectV_raw_loading() {
+void reamber_base_test::HitobjectvRawLoading() {
     HitObjectV ho_v;
-    ho_v.loadRawHitObject(mocks.rawHOStrMultiple, 4);
+    ho_v.loadRawHitObject(tests.rawHOStrMultiple, 4);
 
-    QVERIFY(ho_v == mocks.hoMultiple);
+    QVERIFY(ho_v == tests.hoMultiple);
 }
-void reamber_base_test::TimingPointV_raw_loading() {
-    TimingPointV tp_v;
-    tp_v.loadRawTimingPoint(mocks.rawTPStrMultiple);
+void reamber_base_test::TimingpointvRawLoading() {
+    TimingPointV tpV;
+    tpV.loadRawTimingPoint(tests.rawTPStrMultiple);
 
-    QVERIFY(tp_v == mocks.tpMultiple);
+    QVERIFY(tpV == tests.tpMultiple);
 }
-void reamber_base_test::HitObjectV_editor_loading() {
+void reamber_base_test::HitobjectvEditorLoading() {
     HitObjectV ho_v;
-    ho_v.loadEditorHitObject(mocks.eHOStrMultiple, 4);
+    ho_v.loadEditorHitObject(tests.eHOStrMultiple, 4);
 
-    QVERIFY(ho_v == mocks.eHOMutliple);
+    QVERIFY(ho_v == tests.eHOMutliple);
 }
 
 // FOBO: First Object By Offset
 // LOBO: Last  Object By Offset
-void reamber_base_test::fobo_HitObject()
+void reamber_base_test::foboHitobject()
 {
     QVERIFY(
-                mocks.hoMultiple[0] == // Expect the first object
-            mocks.hoMultiple.getFirstObjectByOffset()
+                tests.hoMultiple[0] == // Expect the first object
+            tests.hoMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::fobo_TimingPoint()
+void reamber_base_test::foboTimingpoint()
 {
     QVERIFY(
-                mocks.tpMultiple[0] == // Expect the first object
-            mocks.tpMultiple.getFirstObjectByOffset()
+                tests.tpMultiple[0] == // Expect the first object
+            tests.tpMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::lobo_HitObject()
+void reamber_base_test::loboHitobject()
 {
     QVERIFY(
-                mocks.hoMultiple[2] == // Expect the first object
-            mocks.hoMultiple.getLastObjectByOffset()
+                tests.hoMultiple[2] == // Expect the first object
+            tests.hoMultiple.getLastObjectByOffset()
             );
 }
-void reamber_base_test::lobo_TimingPoint()
+void reamber_base_test::loboTimingpoint()
 {
     QVERIFY(
-                mocks.tpMultiple[2] == // Expect the first object
-            mocks.tpMultiple.getLastObjectByOffset()
+                tests.tpMultiple[2] == // Expect the first object
+            tests.tpMultiple.getLastObjectByOffset()
             );
 }
 
-void reamber_base_test::get_column_v() {
-    QVERIFY((mocks.hoMultiple.getColumnV() ==
+void reamber_base_test::getColumnV() {
+    QVERIFY((tests.hoMultiple.getColumnV() ==
             QVector<unsigned int>{0, 2, 3}));
 }
-void reamber_base_test::get_offset_min_HitObject() {
-    QVERIFY(mocks.hoMultiple.getOffsetMin() == 1000.0);
+void reamber_base_test::getOffsetMinHitobject() {
+    QVERIFY(tests.hoMultiple.getOffsetMin() == 1000.0);
 }
-void reamber_base_test::get_offset_max_HitObject() {
-    QVERIFY(mocks.hoMultiple.getOffsetMax() == 3000.0);
+void reamber_base_test::getOffsetMaxHitobject() {
+    QVERIFY(tests.hoMultiple.getOffsetMax() == 3000.0);
 }
-void reamber_base_test::get_offset_min_TimingPoint() {
-    QVERIFY(mocks.tpMultiple.getOffsetMin() == 0.0);
+void reamber_base_test::getOffsetMinTimingpoint() {
+    QVERIFY(tests.tpMultiple.getOffsetMin() == 0.0);
 }
-void reamber_base_test::get_offset_max_TimingPoint() {
-    QVERIFY(mocks.tpMultiple.getOffsetMax() == 2000.0);
+void reamber_base_test::getOffsetMaxTimingpoint() {
+    QVERIFY(tests.tpMultiple.getOffsetMax() == 2000.0);
 }
 
-void reamber_base_test::sort_by_offset_HitObject() {
-    HitObjectV ho_v = mocks.hoMultiple;
+void reamber_base_test::sortByOffsetHitobject() {
+    HitObjectV ho_v = tests.hoMultiple;
 
     // Manually sort by descending
     HitObjectV ho_v_sort_desc = HitObjectV(3);
@@ -274,38 +274,38 @@ void reamber_base_test::sort_by_offset_HitObject() {
 
     QVERIFY(ho_v == ho_v_sort_desc);
 }
-void reamber_base_test::sort_by_offset_TimingPoint() {
-    TimingPointV tp_v = mocks.tpMultiple;
+void reamber_base_test::sortByOffsetTimingpoint() {
+    TimingPointV tpV = tests.tpMultiple;
 
     // Manually sort by descending
-    TimingPointV tp_v_sort_desc = TimingPointV(3);
-    tp_v_sort_desc[0] = tp_v[2];
-    tp_v_sort_desc[1] = tp_v[1];
-    tp_v_sort_desc[2] = tp_v[0];
+    TimingPointV tpV_sort_desc = TimingPointV(3);
+    tpV_sort_desc[0] = tpV[2];
+    tpV_sort_desc[1] = tpV[1];
+    tpV_sort_desc[2] = tpV[0];
 
     // Sort by Descending
-    tp_v.sortByOffset(false);
+    tpV.sortByOffset(false);
 
-    QVERIFY(tp_v == tp_v_sort_desc);
+    QVERIFY(tpV == tpV_sort_desc);
 }
 
-void reamber_base_test::TimingPointV_multiply() {
+void reamber_base_test::TimingpointvMultiply() {
     //        [0] [1] [2] [3] [4]
     // SELF :  1   1           1
     // EFF  :  1       1   1
-    TimingPointV tp_v(4);
+    TimingPointV tpV(4);
 
-    tp_v[0].loadParameters(0, 1, false);
-    tp_v[1].loadParameters(1, 2, false);
-    tp_v[2].loadParameters(4, 4, false);
-    tp_v[3].loadParameters(5, 8, false);
-    TimingPointV tp_v_eff(3);
+    tpV[0].loadParameters(0, 1, false);
+    tpV[1].loadParameters(1, 2, false);
+    tpV[2].loadParameters(4, 4, false);
+    tpV[3].loadParameters(5, 8, false);
+    TimingPointV tpV_eff(3);
 
-    tp_v_eff[0].loadParameters(0, 1, false);
-    tp_v_eff[1].loadParameters(2, 0.5, false);
-    tp_v_eff[2].loadParameters(3, 0.25, false);
+    tpV_eff[0].loadParameters(0, 1, false);
+    tpV_eff[1].loadParameters(2, 0.5, false);
+    tpV_eff[2].loadParameters(3, 0.25, false);
 
-    tp_v.crossEffectMultiply(tp_v_eff);
+    tpV.crossEffectMultiply(tpV_eff);
 
     QVector<QString> expected = {
         "0,-100,4,0,0,25,0,0",
@@ -314,78 +314,78 @@ void reamber_base_test::TimingPointV_multiply() {
         "5,-50,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
-void reamber_base_test::TimingPointV_get_ave() {
+void reamber_base_test::TimingpointvGetAve() {
     // SV
-    TimingPointV tp_v = TimingPointV(3);
-    tp_v[0].loadParameters(0, 1.5, false);
-    tp_v[1].loadParameters(100, 0.5, false);
-    tp_v[2].loadParameters(400, 1.75, false);
+    TimingPointV tpV = TimingPointV(3);
+    tpV[0].loadParameters(0, 1.5, false);
+    tpV[1].loadParameters(100, 0.5, false);
+    tpV[2].loadParameters(400, 1.75, false);
 
-    QVERIFY(0.75 == tp_v.getAverageSvValue());
+    QVERIFY(0.75 == tpV.getAverageSvValue());
 
     // BPM
-    tp_v = TimingPointV(3);
-    tp_v[0].loadParameters(0, 200, true);
-    tp_v[1].loadParameters(100, 100, true);
-    tp_v[2].loadParameters(400, 150, true);
+    tpV = TimingPointV(3);
+    tpV[0].loadParameters(0, 200, true);
+    tpV[1].loadParameters(100, 100, true);
+    tpV[2].loadParameters(400, 150, true);
 
-    QVERIFY(125.0 == tp_v.getAverageBpmValue());
+    QVERIFY(125.0 == tpV.getAverageBpmValue());
 
     // MIXED
-    tp_v = TimingPointV(4);
-    tp_v[0].loadParameters(0, 200, true);
-    tp_v[1].loadParameters(50, 0.5, false); // JUNK SV
-    tp_v[2].loadParameters(100, 100, true);
-    tp_v[3].loadParameters(400, 150, true);
+    tpV = TimingPointV(4);
+    tpV[0].loadParameters(0, 200, true);
+    tpV[1].loadParameters(50, 0.5, false); // JUNK SV
+    tpV[2].loadParameters(100, 100, true);
+    tpV[3].loadParameters(400, 150, true);
 
-    QVERIFY(125.0 == tp_v.getAverageBpmValue());
+    QVERIFY(125.0 == tpV.getAverageBpmValue());
 }
 
-void reamber_base_test::TimingPointV_arithmetic()
+void reamber_base_test::TimingpointvArithmetic()
 {
     // +
-    TimingPointV tp_v = TimingPointV(3);
-    tp_v[0].loadParameters(0, 1.5, false);
-    tp_v[1].loadParameters(100, 0.5, false);
-    tp_v[2].loadParameters(400, 1.75, false);
+    TimingPointV tpV = TimingPointV(3);
+    tpV[0].loadParameters(0, 1.5, false);
+    tpV[1].loadParameters(100, 0.5, false);
+    tpV[2].loadParameters(400, 1.75, false);
 
-    tp_v += 2;
+    tpV += 2;
 
-    for (auto tp : tp_v) {
+    for (auto tp : tpV) {
         qDebug() << tp.getStringRaw().toStdString().c_str();
     }
 
     QVERIFY(true);
 }
 
-void reamber_base_test::lib_offset_diff() {
-    auto offsetDifference = algorithm::offsetDiff<HitObject>(mocks.pHOMultiple);
+void reamber_base_test::libOffsetDiff() {
+    auto offsetDifference = algorithm::offsetDiff<HitObject>(tests.pHOMultiple);
     QVERIFY(offsetDifference == QVector<double>({1000, 1000}));
 }
-void reamber_base_test::lib_copy_singular_HitObject() {
-    auto copies = algorithm::copy<HitObject>(mocks.hoNote, QVector<double>{1000, 2000});
+void reamber_base_test::libCopySingularHitobject() {
+    auto copies = algorithm::copy<HitObject>(tests.hoNote, QVector<double>{1000, 2000});
     QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::lib_copy_multiple_HitObject() {
-    auto copies = algorithm::copy<HitObject>(mocks.pHOMultiple, QVector<double>{1000, 2000});
+void reamber_base_test::libCopyMultipleHitobject() {
+    auto copies = algorithm::copy<HitObject>(tests.pHOMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::lib_copy_singular_TimingPoint() {
-    auto copies = algorithm::copy<TimingPoint>(mocks.tpSv, QVector<double>{1000, 2000});
+void reamber_base_test::libCopySingularTimingpoint() {
+    auto copies = algorithm::copy<TimingPoint>(tests.tpSv, QVector<double>{1000, 2000});
     QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::lib_copy_multiple_TimingPoint() {
-    auto copies = algorithm::copy<TimingPoint>(mocks.pTPMultiple, QVector<double>{1000, 2000});
+void reamber_base_test::libCopyMultipleTimingpoint() {
+    auto copies = algorithm::copy<TimingPoint>(tests.pTPMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::lib_copy_sub_by_HitObject() {
+void reamber_base_test::libCopySubByHitobject() {
     // EXCLUDE
     auto copies = algorithm::copySubdBy<HitObject>
-            (QVector<double>({ 100,400,700 }), mocks.hoNote, 2, false);
+            (QVector<double>({ 100,400,700 }), tests.hoNote, 2, false);
 
 //    for (auto s : copies.getStringRawV())
 //        qDebug() << s;
@@ -401,7 +401,7 @@ void reamber_base_test::lib_copy_sub_by_HitObject() {
 
     // INCLUDE
     copies = algorithm::copySubdBy<HitObject>
-            (QVector<double>({ 100,400,700 }), mocks.hoNote, 2, true);
+            (QVector<double>({ 100,400,700 }), tests.hoNote, 2, true);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav", // Subd 0
@@ -415,8 +415,8 @@ void reamber_base_test::lib_copy_sub_by_HitObject() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
-    auto copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, false);
+void reamber_base_test::libCopySubByHitobjectDelay() {
+    auto copies = algorithm::copySubdBy<HitObject>(tests.pHOMultiple, 4, false);
 
     QVector<QString> expected = {
         "64,192,1200,1,0,0:0:0:40:hit1.wav",
@@ -431,7 +431,7 @@ void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
 
     QVERIFY(copies.getStringRawV() == expected);
 
-    copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, true);
+    copies = algorithm::copySubdBy<HitObject>(tests.pHOMultiple, 4, true);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -450,10 +450,10 @@ void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
     QVERIFY(copies.getStringRawV() == expected);
 
 }
-void reamber_base_test::lib_copy_sub_to_HitObject() {
+void reamber_base_test::libCopySubToHitobject() {
     // EXCLUDE
     auto copies = algorithm::copySubdTo<HitObject>
-            (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, false);
+            (QVector<double>({ 100,300,500 }), tests.hoNote, 50, false);
 
     QVector<QString> expected = {
         "64,192,150,1,0,0:0:0:50:hitsound.wav", // Subd 1
@@ -472,7 +472,7 @@ void reamber_base_test::lib_copy_sub_to_HitObject() {
 
     // INCLUDE
     copies = algorithm::copySubdTo<HitObject>
-            (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, true);
+            (QVector<double>({ 100,300,500 }), tests.hoNote, 50, true);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav", // Subd 0
@@ -492,8 +492,8 @@ void reamber_base_test::lib_copy_sub_to_HitObject() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
-    auto copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, false);
+void reamber_base_test::libCopySubToHitobjectDelay() {
+    auto copies = algorithm::copySubdTo<HitObject>(tests.pHOMultiple, 250, false);
 
     QVector<QString> expected = {
         "64,192,1250,1,0,0:0:0:40:hit1.wav",
@@ -506,7 +506,7 @@ void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
 
     QVERIFY(copies.getStringRawV() == expected);
 
-    copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, true);
+    copies = algorithm::copySubdTo<HitObject>(tests.pHOMultiple, 250, true);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -524,9 +524,9 @@ void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
 
 }
 
-void reamber_base_test::lib_copy_reldiff() {
+void reamber_base_test::libCopyReldiff() {
     auto copies = algorithm::copyRel(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, false);
+                QVector<double>({ 100, 300 }), tests.hoNote, 0.25, false);
 
     QVector<QString> expected = {
         "64,192,150,1,0,0:0:0:50:hitsound.wav",
@@ -534,7 +534,7 @@ void reamber_base_test::lib_copy_reldiff() {
     QVERIFY(copies.getStringRawV() == expected);
 
     copies = algorithm::copyRel(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, true);
+                QVector<double>({ 100, 300 }), tests.hoNote, 0.25, true);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav",
@@ -544,9 +544,9 @@ void reamber_base_test::lib_copy_reldiff() {
     QVERIFY(copies.getStringRawV() == expected);
 }
 
-void reamber_base_test::lib_copy_reldiff_delay() {
+void reamber_base_test::libCopyReldiffDelay() {
     auto copies = algorithm::copyRel<HitObject>
-            (mocks.pHOMultiple, 0.25, false);
+            (tests.pHOMultiple, 0.25, false);
 
     QVector<QString> expected = {
         "64,192,1250,1,0,0:0:0:40:hit1.wav",
@@ -556,7 +556,7 @@ void reamber_base_test::lib_copy_reldiff_delay() {
     QVERIFY(copies.getStringRawV() == expected);
 
     copies = algorithm::copyRel<HitObject>
-            (mocks.pHOMultiple, 0.25, true);
+            (tests.pHOMultiple, 0.25, true);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -569,10 +569,10 @@ void reamber_base_test::lib_copy_reldiff_delay() {
     QVERIFY(copies.getStringRawV() == expected);
 }
 
-void reamber_base_test::lib_copy_absdiff() {
+void reamber_base_test::libCopyAbsdiff() {
     // EXCLUDE
     auto copies = algorithm::copyAbs(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 50, false, true, false);
+                QVector<double>({ 100, 300 }), tests.hoNote, 50, false, true, false);
 
     QVector<QString> expected = {
         "64,192,150,1,0,0:0:0:50:hitsound.wav"
@@ -582,7 +582,7 @@ void reamber_base_test::lib_copy_absdiff() {
 
     // EXCLUDE
     copies = algorithm::copyAbs(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, true, false);
+                QVector<double>({ 100, 300 }), tests.hoNote, 50, true, true, false);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav",
@@ -594,7 +594,7 @@ void reamber_base_test::lib_copy_absdiff() {
 
     // EXCLUDE OVERLAP
     copies = algorithm::copyAbs(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 250, true, true, true);
+                QVector<double>({ 100, 300 }), tests.hoNote, 250, true, true, true);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav",
@@ -605,7 +605,7 @@ void reamber_base_test::lib_copy_absdiff() {
 
     // FROM THE BACK
     copies = algorithm::copyAbs(
-                QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, false, true);
+                QVector<double>({ 100, 300 }), tests.hoNote, 50, true, false, true);
 
     expected = {
         "64,192,100,1,0,0:0:0:50:hitsound.wav",
@@ -615,10 +615,10 @@ void reamber_base_test::lib_copy_absdiff() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_copy_absdiff_delay() {
+void reamber_base_test::libCopyAbsdiffDelay() {
     // EXCLUDE
     auto copies = algorithm::copyAbs<HitObject>
-            (mocks.pHOMultiple, 15, false, true, true);
+            (tests.pHOMultiple, 15, false, true, true);
 
     QVector<QString> expected = {
         "64,192,1015,1,0,0:0:0:40:hit1.wav",
@@ -628,7 +628,7 @@ void reamber_base_test::lib_copy_absdiff_delay() {
     // INCLUDE
     QVERIFY(copies.getStringRawV() == expected);
     copies = algorithm::copyAbs<HitObject>
-            (mocks.pHOMultiple, 15, true, true, true);
+            (tests.pHOMultiple, 15, true, true, true);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -643,7 +643,7 @@ void reamber_base_test::lib_copy_absdiff_delay() {
     // EXCLUDE OVERLAP
     QVERIFY(copies.getStringRawV() == expected);
     copies = algorithm::copyAbs<HitObject>
-            (mocks.pHOMultiple, 2000, true, true, true);
+            (tests.pHOMultiple, 2000, true, true, true);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -656,7 +656,7 @@ void reamber_base_test::lib_copy_absdiff_delay() {
     // EXCLUDE OVERLAP
     QVERIFY(copies.getStringRawV() == expected);
     copies = algorithm::copyAbs<HitObject>
-            (mocks.pHOMultiple, 100, true, false, false);
+            (tests.pHOMultiple, 100, true, false, false);
 
     expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -668,17 +668,17 @@ void reamber_base_test::lib_copy_absdiff_delay() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::lib_normalize() {
-    auto normalized = algorithm::normalize(mocks.tpMultiple, 200, false);
+void reamber_base_test::libNormalize() {
+    auto normalized = algorithm::normalize(tests.tpMultiple, 200, false);
     QVector<QString> expected = {
         "0,-200,4,1,1,50,0,0"
     };
 
     QVERIFY(normalized.getStringRawV() == expected);
 }
-void reamber_base_test::lib_create_stutter_relative() {
+void reamber_base_test::libCreateStutterRelative() {
     // SV
-    auto tp_v = algorithm::stutterRel(QVector<double>({ 100,350,600 }), 4, 0.2);
+    auto tpV = algorithm::stutterRel(QVector<double>({ 100,350,600 }), 4, 0.2);
 
     QVector<QString> expected = {
         "100,-25,4,0,0,25,0,0",
@@ -686,12 +686,12 @@ void reamber_base_test::lib_create_stutter_relative() {
         "350,-25,4,0,0,25,0,0",
         "400,-400,4,0,0,25,0,0",
         "600,-100,4,0,0,25,0,0"
-    };    for (auto s : tp_v.getStringRawV())qDebug () << s;
+    };    for (auto s : tpV.getStringRawV())qDebug () << s;
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 
     // BPM
-    tp_v = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
+    tpV = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
 
     expected = {
         "100,150,4,0,0,25,1,0",
@@ -701,13 +701,13 @@ void reamber_base_test::lib_create_stutter_relative() {
         "700,300,4,0,0,25,1,0"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
-void reamber_base_test::lib_create_stutter_absolute() {
+void reamber_base_test::libCreateStutterAbsolute() {
     // SV
-    auto tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 1.5, 100, 1.0);
+    auto tpV = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 1.5, 100, 1.0);
 
-    //for (auto s : tp_v.getStringRawV()) qDebug () << s;
+    //for (auto s : tpV.getStringRawV()) qDebug () << s;
 
     QVector<QString> expected = {
         "100,-66.66666667,4,0,0,25,0,0",
@@ -717,10 +717,10 @@ void reamber_base_test::lib_create_stutter_absolute() {
         "700,-100,4,0,0,25,0,0"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 
     // BPM
-    tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
+    tpV = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
 
     expected = {
         "100,400,4,0,0,25,1,0",
@@ -730,22 +730,22 @@ void reamber_base_test::lib_create_stutter_absolute() {
         "700,600,4,0,0,25,1,0"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
 
-void reamber_base_test::lib_create_stutter_from_offset() {
-    auto tp_v = algorithm::stutter(QVector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
+void reamber_base_test::libCreateStutterFromOffset() {
+    auto tpV = algorithm::stutter(QVector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
     QVector<QString> expected = {
         "100,-66.66666667,4,0,0,25,0,0",
         "400,-200,4,0,0,25,0,0",
         "700,-100,4,0,0,25,0,0"
     };
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
 
-void reamber_base_test::lib_delete_nth() {
+void reamber_base_test::libDeleteNth() {
     // HO
-    auto ho_v = algorithm::deleteNth<HitObject>(mocks.pHOMultiple, 2, 1);
+    auto ho_v = algorithm::deleteNth<HitObject>(tests.pHOMultiple, 2, 1);
 
     QVector<QString> expected = {
         "64,192,1000,1,0,0:0:0:40:hit1.wav",
@@ -755,18 +755,18 @@ void reamber_base_test::lib_delete_nth() {
     QVERIFY(ho_v.getStringRawV() == expected);
 
     // TP
-    auto tp_v = algorithm::deleteNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
+    auto tpV = algorithm::deleteNth<TimingPoint>(tests.pTPMultiple, 2, 1);
 
     expected = {
         "0,150,4,1,1,50,1,0",
         "1000,-50,4,1,1,50,0,1"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
-void reamber_base_test::lib_extract_nth() {
+void reamber_base_test::libExtractNth() {
     // HO
-    auto ho_v = algorithm::extractNth<HitObject>(mocks.pHOMultiple, 2, 1);
+    auto ho_v = algorithm::extractNth<HitObject>(tests.pHOMultiple, 2, 1);
 
     QVector<QString> expected = {
         "320,192,2000,128,0,2500:0:0:0:50:hit2.wav"
@@ -776,13 +776,13 @@ void reamber_base_test::lib_extract_nth() {
 
 
     // TP
-    auto tp_v = algorithm::extractNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
+    auto tpV = algorithm::extractNth<TimingPoint>(tests.pTPMultiple, 2, 1);
 
     expected = {
         "1000,-50,4,1,1,50,0,1"
     };
 
-    QVERIFY(tp_v.getStringRawV() == expected);
+    QVERIFY(tpV.getStringRawV() == expected);
 }
 
 
