@@ -207,7 +207,7 @@ void reamber_base_test::TimingPointV_raw_loading() {
 }
 void reamber_base_test::HitObjectV_editor_loading() {
     HitObjectV ho_v;
-    qDebug() << ho_v.loadEditorHitObject(mocks.eHOStrMultiple, 4);
+    ho_v.loadEditorHitObject(mocks.eHOStrMultiple, 4);
 
     QVERIFY(ho_v == mocks.eHOMutliple);
 }
@@ -308,10 +308,10 @@ void reamber_base_test::TimingPointV_multiply() {
     tp_v.crossEffectMultiply(tp_v_eff);
 
     QVector<QString> expected = {
-        "0.000000,-100.000000,4,0,0,25,0,0",
-        "1.000000,-50.000000,4,0,0,25,0,0",
-        "4.000000,-100.000000,4,0,0,25,0,0",
-        "5.000000,-50.000000,4,0,0,25,0,0"
+        "0,-100,4,0,0,25,0,0",
+        "1,-50,4,0,0,25,0,0",
+        "4,-100,4,0,0,25,0,0",
+        "5,-50,4,0,0,25,0,0"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
@@ -385,29 +385,32 @@ void reamber_base_test::lib_copy_multiple_TimingPoint() {
 void reamber_base_test::lib_copy_sub_by_HitObject() {
     // EXCLUDE
     auto copies = algorithm::copySubdBy<HitObject>
-            (QVector<double>({ 100,300,500 }), mocks.hoNote, 2, false);
+            (QVector<double>({ 100,400,700 }), mocks.hoNote, 2, false);
+
+//    for (auto s : copies.getStringRawV())
+//        qDebug() << s;
 
     QVector<QString> expected = {
-        "64,192,166.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,233.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,366.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,433.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,200,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,300,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,500,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,600,1,0,0:0:0:50:hitsound.wav" // Subd 2
     };
 
     QVERIFY(copies.getStringRawV() == expected);
 
     // INCLUDE
     copies = algorithm::copySubdBy<HitObject>
-            (QVector<double>({ 100,300,500 }), mocks.hoNote, 2, true);
+            (QVector<double>({ 100,400,700 }), mocks.hoNote, 2, true);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
-        "64,192,166.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,233.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
-        "64,192,366.666667,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,433.333333,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,500.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 0
+        "64,192,100,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,200,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,300,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,400,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,500,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,600,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,700,1,0,0:0:0:50:hitsound.wav"  // Subd 0
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -416,14 +419,14 @@ void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
     auto copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, false);
 
     QVector<QString> expected = {
-        "64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2200.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2400.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2600.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2800.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
+        "64,192,1200,1,0,0:0:0:40:hit1.wav",
+        "64,192,1400,1,0,0:0:0:40:hit1.wav",
+        "64,192,1600,1,0,0:0:0:40:hit1.wav",
+        "64,192,1800,1,0,0:0:0:40:hit1.wav",
+        "320,192,2200,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2400,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2600,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2800,128,0,2500:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -431,17 +434,17 @@ void reamber_base_test::lib_copy_sub_by_HitObject_delay() {
     copies = algorithm::copySubdBy<HitObject>(mocks.pHOMultiple, 4, true);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1200.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1400.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1600.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1800.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2200.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2400.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2600.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2800.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1200,1,0,0:0:0:40:hit1.wav",
+        "64,192,1400,1,0,0:0:0:40:hit1.wav",
+        "64,192,1600,1,0,0:0:0:40:hit1.wav",
+        "64,192,1800,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2200,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2400,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2600,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2800,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -453,17 +456,17 @@ void reamber_base_test::lib_copy_sub_to_HitObject() {
             (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, false);
 
     QVector<QString> expected = {
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,200.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,250.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
-        "64,192,350.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,400.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,450.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 3
+        "64,192,150,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,200,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,250,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,350,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,400,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,450,1,0,0:0:0:50:hitsound.wav"  // Subd 3
     };
 
-    for (auto ho : copies) {
-        qDebug() << ho.getStringRaw().toStdString().c_str();
-    }
+//    for (auto ho : copies) {
+//        qDebug() << ho.getStringRaw().toStdString().c_str();
+//    }
 
     QVERIFY(copies.getStringRawV() == expected);
 
@@ -472,20 +475,20 @@ void reamber_base_test::lib_copy_sub_to_HitObject() {
             (QVector<double>({ 100,300,500 }), mocks.hoNote, 50, true);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,200.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,250.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav", // Subd 0
-        "64,192,350.000000,1,0,0:0:0:50:hitsound.wav", // Subd 1
-        "64,192,400.000000,1,0,0:0:0:50:hitsound.wav", // Subd 2
-        "64,192,450.000000,1,0,0:0:0:50:hitsound.wav", // Subd 3
-        "64,192,500.000000,1,0,0:0:0:50:hitsound.wav"  // Subd 0
+        "64,192,100,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,150,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,200,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,250,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,300,1,0,0:0:0:50:hitsound.wav", // Subd 0
+        "64,192,350,1,0,0:0:0:50:hitsound.wav", // Subd 1
+        "64,192,400,1,0,0:0:0:50:hitsound.wav", // Subd 2
+        "64,192,450,1,0,0:0:0:50:hitsound.wav", // Subd 3
+        "64,192,500,1,0,0:0:0:50:hitsound.wav"  // Subd 0
     };
 
-    for (auto ho : copies) {
-        qDebug() << ho.getStringRaw().toStdString().c_str();
-    }
+//    for (auto ho : copies) {
+//        qDebug() << ho.getStringRaw().toStdString().c_str();
+//    }
 
     QVERIFY(copies.getStringRawV() == expected);
 }
@@ -493,12 +496,12 @@ void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
     auto copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, false);
 
     QVector<QString> expected = {
-        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2500.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2750.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
+        "64,192,1250,1,0,0:0:0:40:hit1.wav",
+        "64,192,1500,1,0,0:0:0:40:hit1.wav",
+        "64,192,1750,1,0,0:0:0:40:hit1.wav",
+        "320,192,2250,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2500,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2750,128,0,2500:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -506,15 +509,15 @@ void reamber_base_test::lib_copy_sub_to_HitObject_delay() {
     copies = algorithm::copySubdTo<HitObject>(mocks.pHOMultiple, 250, true);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1500.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1750.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2500.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2750.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1250,1,0,0:0:0:40:hit1.wav",
+        "64,192,1500,1,0,0:0:0:40:hit1.wav",
+        "64,192,1750,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2250,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2500,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2750,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -526,7 +529,7 @@ void reamber_base_test::lib_copy_reldiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, false);
 
     QVector<QString> expected = {
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
+        "64,192,150,1,0,0:0:0:50:hitsound.wav",
     };
     QVERIFY(copies.getStringRawV() == expected);
 
@@ -534,9 +537,9 @@ void reamber_base_test::lib_copy_reldiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 0.25, true);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav",
+        "64,192,100,1,0,0:0:0:50:hitsound.wav",
+        "64,192,150,1,0,0:0:0:50:hitsound.wav",
+        "64,192,300,1,0,0:0:0:50:hitsound.wav",
     };
     QVERIFY(copies.getStringRawV() == expected);
 }
@@ -546,8 +549,8 @@ void reamber_base_test::lib_copy_reldiff_delay() {
             (mocks.pHOMultiple, 0.25, false);
 
     QVector<QString> expected = {
-        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
+        "64,192,1250,1,0,0:0:0:40:hit1.wav",
+        "320,192,2250,128,0,2500:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -556,11 +559,11 @@ void reamber_base_test::lib_copy_reldiff_delay() {
             (mocks.pHOMultiple, 0.25, true);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1250.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2250.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1250,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2250,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -572,7 +575,7 @@ void reamber_base_test::lib_copy_absdiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 50, false, true, false);
 
     QVector<QString> expected = {
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav"
+        "64,192,150,1,0,0:0:0:50:hitsound.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -582,9 +585,9 @@ void reamber_base_test::lib_copy_absdiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, true, false);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,150.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
+        "64,192,100,1,0,0:0:0:50:hitsound.wav",
+        "64,192,150,1,0,0:0:0:50:hitsound.wav",
+        "64,192,300,1,0,0:0:0:50:hitsound.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -594,8 +597,8 @@ void reamber_base_test::lib_copy_absdiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 250, true, true, true);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav",
+        "64,192,100,1,0,0:0:0:50:hitsound.wav",
+        "64,192,300,1,0,0:0:0:50:hitsound.wav",
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -605,9 +608,9 @@ void reamber_base_test::lib_copy_absdiff() {
                 QVector<double>({ 100, 300 }), mocks.hoNote, 50, true, false, true);
 
     expected = {
-        "64,192,100.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,250.000000,1,0,0:0:0:50:hitsound.wav",
-        "64,192,300.000000,1,0,0:0:0:50:hitsound.wav"
+        "64,192,100,1,0,0:0:0:50:hitsound.wav",
+        "64,192,250,1,0,0:0:0:50:hitsound.wav",
+        "64,192,300,1,0,0:0:0:50:hitsound.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -618,8 +621,8 @@ void reamber_base_test::lib_copy_absdiff_delay() {
             (mocks.pHOMultiple, 15, false, true, true);
 
     QVector<QString> expected = {
-        "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2015.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "64,192,1015,1,0,0:0:0:40:hit1.wav",
+        "320,192,2015,128,0,2500:0:0:0:50:hit2.wav",
     };
 
     // INCLUDE
@@ -628,11 +631,11 @@ void reamber_base_test::lib_copy_absdiff_delay() {
             (mocks.pHOMultiple, 15, true, true, true);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1015.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2015.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1015,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2015,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -643,9 +646,9 @@ void reamber_base_test::lib_copy_absdiff_delay() {
             (mocks.pHOMultiple, 2000, true, true, true);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -656,11 +659,11 @@ void reamber_base_test::lib_copy_absdiff_delay() {
             (mocks.pHOMultiple, 100, true, false, false);
 
     expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "64,192,1900.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "320,192,2900.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
-        "448,192,3000.000000,1,0,0:0:0:60:hit3.wav"
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "64,192,1900,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
+        "320,192,2900,128,0,2500:0:0:0:50:hit2.wav",
+        "448,192,3000,1,0,0:0:0:60:hit3.wav"
     };
 
     QVERIFY(copies.getStringRawV() == expected);
@@ -668,22 +671,22 @@ void reamber_base_test::lib_copy_absdiff_delay() {
 void reamber_base_test::lib_normalize() {
     auto normalized = algorithm::normalize(mocks.tpMultiple, 200, false);
     QVector<QString> expected = {
-        "0.000000,-200.000000,4,1,1,50,0,0"
+        "0,-200,4,1,1,50,0,0"
     };
 
     QVERIFY(normalized.getStringRawV() == expected);
 }
 void reamber_base_test::lib_create_stutter_relative() {
     // SV
-    auto tp_v = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 1.5, 0.25);
+    auto tp_v = algorithm::stutterRel(QVector<double>({ 100,350,600 }), 4, 0.2);
 
     QVector<QString> expected = {
-        "100.000000,-66.666667,4,0,0,25,0,0",
-        "150.000000,-120.000000,4,0,0,25,0,0",
-        "300.000000,-66.666667,4,0,0,25,0,0",
-        "400.000000,-120.000000,4,0,0,25,0,0",
-        "700.000000,-100.000000,4,0,0,25,0,0"
-    };
+        "100,-25,4,0,0,25,0,0",
+        "150,-400,4,0,0,25,0,0",
+        "350,-25,4,0,0,25,0,0",
+        "400,-400,4,0,0,25,0,0",
+        "600,-100,4,0,0,25,0,0"
+    };    for (auto s : tp_v.getStringRawV())qDebug () << s;
 
     QVERIFY(tp_v.getStringRawV() == expected);
 
@@ -691,11 +694,11 @@ void reamber_base_test::lib_create_stutter_relative() {
     tp_v = algorithm::stutterRel(QVector<double>({ 100,300,700 }), 400, 0.25, 200, true, false);
 
     expected = {
-        "100.000000,150.000000,4,0,0,25,1,0",
-        "150.000000,450.000000,4,0,0,25,1,0",
-        "300.000000,150.000000,4,0,0,25,1,0",
-        "400.000000,450.000000,4,0,0,25,1,0",
-        "700.000000,300.000000,4,0,0,25,1,0"
+        "100,150,4,0,0,25,1,0",
+        "150,450,4,0,0,25,1,0",
+        "300,150,4,0,0,25,1,0",
+        "400,450,4,0,0,25,1,0",
+        "700,300,4,0,0,25,1,0"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
@@ -704,12 +707,14 @@ void reamber_base_test::lib_create_stutter_absolute() {
     // SV
     auto tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 1.5, 100, 1.0);
 
+    //for (auto s : tp_v.getStringRawV()) qDebug () << s;
+
     QVector<QString> expected = {
-        "100.000000,-66.666667,4,0,0,25,0,0",
-        "200.000000,-200.000000,4,0,0,25,0,0",
-        "300.000000,-66.666667,4,0,0,25,0,0",
-        "400.000000,-120.000000,4,0,0,25,0,0",
-        "700.000000,-100.000000,4,0,0,25,0,0"
+        "100,-66.66666667,4,0,0,25,0,0",
+        "200,-200,4,0,0,25,0,0",
+        "300,-66.66666667,4,0,0,25,0,0",
+        "400,-120,4,0,0,25,0,0",
+        "700,-100,4,0,0,25,0,0"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
@@ -718,11 +723,11 @@ void reamber_base_test::lib_create_stutter_absolute() {
     tp_v = algorithm::stutterAbs(QVector<double>({ 100,300,700 }), 150, 100, 100, true, true, true);
 
     expected = {
-        "100.000000,400.000000,4,0,0,25,1,0",
-        "200.000000,1200.000000,4,0,0,25,1,0",
-        "300.000000,400.000000,4,0,0,25,1,0",
-        "400.000000,720.000000,4,0,0,25,1,0",
-        "700.000000,600.000000,4,0,0,25,1,0"
+        "100,400,4,0,0,25,1,0",
+        "200,1200,4,0,0,25,1,0",
+        "300,400,4,0,0,25,1,0",
+        "400,720,4,0,0,25,1,0",
+        "700,600,4,0,0,25,1,0"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
@@ -731,11 +736,10 @@ void reamber_base_test::lib_create_stutter_absolute() {
 void reamber_base_test::lib_create_stutter_from_offset() {
     auto tp_v = algorithm::stutter(QVector<double>({ 100,400,700 }), 1.5, 1.0, false, true);
     QVector<QString> expected = {
-        "100.000000,-66.666667,4,0,0,25,0,0",
-        "400.000000,-200.000000,4,0,0,25,0,0",
-        "700.000000,-100.000000,4,0,0,25,0,0"
+        "100,-66.66666667,4,0,0,25,0,0",
+        "400,-200,4,0,0,25,0,0",
+        "700,-100,4,0,0,25,0,0"
     };
-
     QVERIFY(tp_v.getStringRawV() == expected);
 }
 
@@ -744,8 +748,8 @@ void reamber_base_test::lib_delete_nth() {
     auto ho_v = algorithm::deleteNth<HitObject>(mocks.pHOMultiple, 2, 1);
 
     QVector<QString> expected = {
-        "64,192,1000.000000,1,0,0:0:0:40:hit1.wav",
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav",
+        "64,192,1000,1,0,0:0:0:40:hit1.wav",
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav",
     };
 
     QVERIFY(ho_v.getStringRawV() == expected);
@@ -754,8 +758,8 @@ void reamber_base_test::lib_delete_nth() {
     auto tp_v = algorithm::deleteNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
 
     expected = {
-        "0.000000,150.000000,4,1,1,50,1,0",
-        "1000.000000,-50.000000,4,1,1,50,0,1"
+        "0,150,4,1,1,50,1,0",
+        "1000,-50,4,1,1,50,0,1"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
@@ -765,7 +769,7 @@ void reamber_base_test::lib_extract_nth() {
     auto ho_v = algorithm::extractNth<HitObject>(mocks.pHOMultiple, 2, 1);
 
     QVector<QString> expected = {
-        "320,192,2000.000000,128,0,2500.000000:0:0:0:50:hit2.wav"
+        "320,192,2000,128,0,2500:0:0:0:50:hit2.wav"
     };
 
     QVERIFY(ho_v.getStringRawV() == expected);
@@ -775,7 +779,7 @@ void reamber_base_test::lib_extract_nth() {
     auto tp_v = algorithm::extractNth<TimingPoint>(mocks.pTPMultiple, 2, 1);
 
     expected = {
-        "1000.000000,-50.000000,4,1,1,50,0,1"
+        "1000,-50,4,1,1,50,0,1"
     };
 
     QVERIFY(tp_v.getStringRawV() == expected);
