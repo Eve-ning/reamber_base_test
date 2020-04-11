@@ -106,41 +106,41 @@ class reamber_base_test : public QObject
 
 private slots:
     void trimEHO();
-    void HitobjectRawLoading();
-    void TimingpointRawLoad();
-    void HitobjectEditorLoading();
-    void HitobjectvRawLoading();
-    void TimingpointvRawLoading();
-    void HitobjectvEditorLoading();
+    void HORawLoading();
+    void TPRawLoad();
+    void HOEditorLoading();
+    void HOVRawLoading();
+    void TPVRawLoading();
+    void HOVEditorLoading();
 
-    void foboHitobject();
-    void foboTimingpoint();
-    void loboHitobject();
-    void loboTimingpoint();
+    void foboHO();
+    void foboTP();
+    void loboHO();
+    void loboTP();
 
     void getColumnV();
-    void getOffsetMinHitobject();
-    void getOffsetMaxHitobject();
-    void getOffsetMinTimingpoint();
-    void getOffsetMaxTimingpoint();
+    void getOffsetMinHO();
+    void getOffsetMaxHO();
+    void getOffsetMinTP();
+    void getOffsetMaxTP();
 
-    void sortByOffsetHitobject();
-    void sortByOffsetTimingpoint();
+    void sortByOffsetHO();
+    void sortByOffsetTP();
 
-    void TimingpointvMultiply();
-    void TimingpointvGetAve();
+    void TPVMultiply();
+    void TPVGetAve();
 
-    void TimingpointvArithmetic();
+    void TPVArithmetic();
 
     void libOffsetDiff();
-    void libCopySingularHitobject();
-    void libCopyMultipleHitobject();
-    void libCopySingularTimingpoint();
-    void libCopyMultipleTimingpoint();
-    void libCopySubByHitobject();
-    void libCopySubByHitobjectDelay();
-    void libCopySubToHitobject();
-    void libCopySubToHitobjectDelay();
+    void libCopySingularHO();
+    void libCopyMultipleHO();
+    void libCopySingularTP();
+    void libCopyMultipleTP();
+    void libCopySubByHO();
+    void libCopySubByHODelay();
+    void libCopySubToHO();
+    void libCopySubToHODelay();
     void libCopyReldiff();
     void libCopyReldiffDelay();
     void libCopyAbsdiff();
@@ -163,21 +163,21 @@ void reamber_base_test::trimEHO() {
     HitObject::trimEditorHitObject(str);
     QVERIFY(QString("1000|1,2000|2") == str);
 }
-void reamber_base_test::HitobjectRawLoading()
+void reamber_base_test::HORawLoading()
 {
     HitObject ho;
     ho.loadRawHitObject(tests.rawHOStrNote, 4);
 
     QVERIFY(ho == tests.hoNote);
 }
-void reamber_base_test::TimingpointRawLoad()
+void reamber_base_test::TPRawLoad()
 {
     TimingPoint tp;
     tp.loadRawTimingPoint(tests.rawTPBpm);
 
     QVERIFY(tp == tests.tpBpm);
 }
-void reamber_base_test::HitobjectEditorLoading()
+void reamber_base_test::HOEditorLoading()
 {
     HitObject ho;
     QString load_str = "00:01:000 (1000|0) - ";
@@ -193,19 +193,19 @@ void reamber_base_test::HitobjectEditorLoading()
 
 }
 
-void reamber_base_test::HitobjectvRawLoading() {
+void reamber_base_test::HOVRawLoading() {
     HitObjectV ho_v;
     ho_v.loadRawHitObject(tests.rawHOStrMultiple, 4);
 
     QVERIFY(ho_v == tests.hoMultiple);
 }
-void reamber_base_test::TimingpointvRawLoading() {
+void reamber_base_test::TPVRawLoading() {
     TimingPointV tpV;
     tpV.loadRawTimingPoint(tests.rawTPStrMultiple);
 
     QVERIFY(tpV == tests.tpMultiple);
 }
-void reamber_base_test::HitobjectvEditorLoading() {
+void reamber_base_test::HOVEditorLoading() {
     HitObjectV ho_v;
     ho_v.loadEditorHitObject(tests.eHOStrMultiple, 4);
 
@@ -214,28 +214,28 @@ void reamber_base_test::HitobjectvEditorLoading() {
 
 // FOBO: First Object By Offset
 // LOBO: Last  Object By Offset
-void reamber_base_test::foboHitobject()
+void reamber_base_test::foboHO()
 {
     QVERIFY(
                 tests.hoMultiple[0] == // Expect the first object
             tests.hoMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::foboTimingpoint()
+void reamber_base_test::foboTP()
 {
     QVERIFY(
                 tests.tpMultiple[0] == // Expect the first object
             tests.tpMultiple.getFirstObjectByOffset()
             );
 }
-void reamber_base_test::loboHitobject()
+void reamber_base_test::loboHO()
 {
     QVERIFY(
                 tests.hoMultiple[2] == // Expect the first object
             tests.hoMultiple.getLastObjectByOffset()
             );
 }
-void reamber_base_test::loboTimingpoint()
+void reamber_base_test::loboTP()
 {
     QVERIFY(
                 tests.tpMultiple[2] == // Expect the first object
@@ -247,20 +247,20 @@ void reamber_base_test::getColumnV() {
     QVERIFY((tests.hoMultiple.getColumnV() ==
             QVector<unsigned int>{0, 2, 3}));
 }
-void reamber_base_test::getOffsetMinHitobject() {
+void reamber_base_test::getOffsetMinHO() {
     QVERIFY(tests.hoMultiple.getOffsetMin() == 1000.0);
 }
-void reamber_base_test::getOffsetMaxHitobject() {
+void reamber_base_test::getOffsetMaxHO() {
     QVERIFY(tests.hoMultiple.getOffsetMax() == 3000.0);
 }
-void reamber_base_test::getOffsetMinTimingpoint() {
+void reamber_base_test::getOffsetMinTP() {
     QVERIFY(tests.tpMultiple.getOffsetMin() == 0.0);
 }
-void reamber_base_test::getOffsetMaxTimingpoint() {
+void reamber_base_test::getOffsetMaxTP() {
     QVERIFY(tests.tpMultiple.getOffsetMax() == 2000.0);
 }
 
-void reamber_base_test::sortByOffsetHitobject() {
+void reamber_base_test::sortByOffsetHO() {
     HitObjectV ho_v = tests.hoMultiple;
 
     // Manually sort by descending
@@ -274,22 +274,22 @@ void reamber_base_test::sortByOffsetHitobject() {
 
     QVERIFY(ho_v == ho_v_sort_desc);
 }
-void reamber_base_test::sortByOffsetTimingpoint() {
+void reamber_base_test::sortByOffsetTP() {
     TimingPointV tpV = tests.tpMultiple;
 
     // Manually sort by descending
-    TimingPointV tpV_sort_desc = TimingPointV(3);
-    tpV_sort_desc[0] = tpV[2];
-    tpV_sort_desc[1] = tpV[1];
-    tpV_sort_desc[2] = tpV[0];
+    TimingPointV tpVSortDesc = TimingPointV(3);
+    tpVSortDesc[0] = tpV[2];
+    tpVSortDesc[1] = tpV[1];
+    tpVSortDesc[2] = tpV[0];
 
     // Sort by Descending
     tpV.sortByOffset(false);
 
-    QVERIFY(tpV == tpV_sort_desc);
+    QVERIFY(tpV == tpVSortDesc);
 }
 
-void reamber_base_test::TimingpointvMultiply() {
+void reamber_base_test::TPVMultiply() {
     //        [0] [1] [2] [3] [4]
     // SELF :  1   1           1
     // EFF  :  1       1   1
@@ -316,7 +316,7 @@ void reamber_base_test::TimingpointvMultiply() {
 
     QVERIFY(tpV.getStringRawV() == expected);
 }
-void reamber_base_test::TimingpointvGetAve() {
+void reamber_base_test::TPVGetAve() {
     // SV
     TimingPointV tpV = TimingPointV(3);
     tpV[0].loadParameters(0, 1.5, false);
@@ -343,7 +343,7 @@ void reamber_base_test::TimingpointvGetAve() {
     QVERIFY(125.0 == tpV.getAverageBpmValue());
 }
 
-void reamber_base_test::TimingpointvArithmetic()
+void reamber_base_test::TPVArithmetic()
 {
     // +
     TimingPointV tpV = TimingPointV(3);
@@ -364,25 +364,25 @@ void reamber_base_test::libOffsetDiff() {
     auto offsetDifference = algorithm::offsetDiff<HitObject>(tests.pHOMultiple);
     QVERIFY(offsetDifference == QVector<double>({1000, 1000}));
 }
-void reamber_base_test::libCopySingularHitobject() {
+void reamber_base_test::libCopySingularHO() {
     auto copies = algorithm::copy<HitObject>(tests.hoNote, QVector<double>{1000, 2000});
     QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::libCopyMultipleHitobject() {
+void reamber_base_test::libCopyMultipleHO() {
     auto copies = algorithm::copy<HitObject>(tests.pHOMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::libCopySingularTimingpoint() {
+void reamber_base_test::libCopySingularTP() {
     auto copies = algorithm::copy<TimingPoint>(tests.tpSv, QVector<double>{1000, 2000});
     QVERIFY(QVector<double>({ 1000,2000 }) == copies.getOffsetV(false));
 }
-void reamber_base_test::libCopyMultipleTimingpoint() {
+void reamber_base_test::libCopyMultipleTP() {
     auto copies = algorithm::copy<TimingPoint>(tests.pTPMultiple, QVector<double>{1000, 2000});
     // Get unique offset for copies
     QVERIFY(QVector<double>({ 1000,2000,3000,4000 }) == copies.getOffsetV(true));
 }
-void reamber_base_test::libCopySubByHitobject() {
+void reamber_base_test::libCopySubByHO() {
     // EXCLUDE
     auto copies = algorithm::copySubdBy<HitObject>
             (QVector<double>({ 100,400,700 }), tests.hoNote, 2, false);
@@ -415,7 +415,7 @@ void reamber_base_test::libCopySubByHitobject() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::libCopySubByHitobjectDelay() {
+void reamber_base_test::libCopySubByHODelay() {
     auto copies = algorithm::copySubdBy<HitObject>(tests.pHOMultiple, 4, false);
 
     QVector<QString> expected = {
@@ -450,7 +450,7 @@ void reamber_base_test::libCopySubByHitobjectDelay() {
     QVERIFY(copies.getStringRawV() == expected);
 
 }
-void reamber_base_test::libCopySubToHitobject() {
+void reamber_base_test::libCopySubToHO() {
     // EXCLUDE
     auto copies = algorithm::copySubdTo<HitObject>
             (QVector<double>({ 100,300,500 }), tests.hoNote, 50, false);
@@ -492,7 +492,7 @@ void reamber_base_test::libCopySubToHitobject() {
 
     QVERIFY(copies.getStringRawV() == expected);
 }
-void reamber_base_test::libCopySubToHitobjectDelay() {
+void reamber_base_test::libCopySubToHODelay() {
     auto copies = algorithm::copySubdTo<HitObject>(tests.pHOMultiple, 250, false);
 
     QVector<QString> expected = {
