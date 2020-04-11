@@ -8,7 +8,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../build-reamber_base-D
 else:unix: LIBS += -L$$PWD/../build-reamber_base-Desktop_Qt_5_13_0_MSVC2017_32bit-Debug/ -lreamber_base
 
 INCLUDEPATH += \
-$$PWD/../reamber_base \
 $$PWD/../reamber_base/include
 DEPENDPATH += $$PWD/../reamber_base/include
 
