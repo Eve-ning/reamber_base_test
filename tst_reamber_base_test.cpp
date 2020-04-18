@@ -14,11 +14,11 @@ public:
     TestObjs() {
 
         hoNote.loadParameters(
-            0, 192, 1000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            0, 192, 1000, HitObject::NOTE_TYPE::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
             OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
             OsuObject::SAMPLE_SET::AUTO, 50, "hitsound.wav", 4);
         hoLongNote.loadParameters(
-            0, 192, 1000, HitObject::LN, OsuObject::SAMPLE_SET::AUTO, 1500,
+            0, 192, 1000, HitObject::NOTE_TYPE::LN, OsuObject::SAMPLE_SET::AUTO, 1500,
             OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
             OsuObject::SAMPLE_SET::AUTO, 50, "hitsound.wav", 4);
 
@@ -35,15 +35,15 @@ public:
         eHOMutliple[1].loadParameters(2, 2000, 0, 4);
 
         hoMultiple[0].loadParameters(
-            0, 192, 1000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            0, 192, 1000, HitObject::NOTE_TYPE::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
             OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
             OsuObject::SAMPLE_SET::AUTO, 40, "hit1.wav", 4);
         hoMultiple[1].loadParameters(
-            2, 192, 2000, HitObject::LN, OsuObject::SAMPLE_SET::AUTO, 2500,
+            2, 192, 2000, HitObject::NOTE_TYPE::LN, OsuObject::SAMPLE_SET::AUTO, 2500,
             OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
             OsuObject::SAMPLE_SET::AUTO, 50, "hit2.wav", 4);
         hoMultiple[2].loadParameters(
-            3, 192, 3000, HitObject::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
+            3, 192, 3000, HitObject::NOTE_TYPE::NORMAL, OsuObject::SAMPLE_SET::AUTO, 0,
             OsuObject::SAMPLE_SET::AUTO, OsuObject::SAMPLE_SET::AUTO,
             OsuObject::SAMPLE_SET::AUTO, 60, "hit3.wav", 4);
 
@@ -106,12 +106,12 @@ class reamber_base_test : public QObject
 
 private slots:
     void trimEHO();
-    void HORawLoading();
-    void TPRawLoad();
-    void HOEditorLoading();
-    void HOVRawLoading();
-    void TPVRawLoading();
-    void HOVEditorLoading();
+    void hoRawLoading();
+    void tpRawLoad();
+    void hoEditorLoading();
+    void hoVRawLoading();
+    void tpVRawLoading();
+    void hoVEditorLoading();
 
     void foboHO();
     void foboTP();
@@ -127,10 +127,10 @@ private slots:
     void sortByOffsetHO();
     void sortByOffsetTP();
 
-    void TPVMultiply();
-    void TPVGetAve();
+    void tpVMultiply();
+    void tpVGetAve();
 
-    void TPVArithmetic();
+    void tpVArithmetic();
 
     void libOffsetDiff();
     void libCopySingularHO();
@@ -160,28 +160,26 @@ private:
 void reamber_base_test::trimEHO() {
 
     QString str = tests.eHOStrMultiple;
-    HitObject::trimEditorHitObject(str);
+    HitObject::trimEditor(str);
     QVERIFY(QString("1000|1,2000|2") == str);
 }
-void reamber_base_test::HORawLoading()
+void reamber_base_test::hoRawLoading()
 {
     HitObject ho;
-    ho.loadRawHitObject(tests.rawHOStrNote, 4);
+    ho.loadRaw(tests.rawHOStrNote, 4);
 
     QVERIFY(ho == tests.hoNote);
 }
-void reamber_base_test::TPRawLoad()
+void reamber_base_test::tpRawLoad()
 {
     TimingPoint tp;
-    tp.loadRawTimingPoint(tests.rawTPBpm);
+    tp.loadRaw(tests.rawTPBpm);
 
     QVERIFY(tp == tests.tpBpm);
 }
-void reamber_base_test::HOEditorLoading()
+void reamber_base_test::hoEditorLoading()
 {
-    HitObject ho;
-    QString load_str = "00:01:000 (1000|0) - ";
-    ho.loadEditorHitObject(load_str, 4);
+    HitObject ho("00:01:000 (1000|0) - ", HitObject::TYPE::EDITOR, 4);
 
     HitObject ho_expected;
     ho_expected.loadParameters(
@@ -193,54 +191,37 @@ void reamber_base_test::HOEditorLoading()
 
 }
 
-void reamber_base_test::HOVRawLoading() {
-    HitObjectV ho_v;
-    ho_v.loadRawHitObject(tests.rawHOStrMultiple, 4);
-
+void reamber_base_test::hoVRawLoading() {
+    HitObjectV ho_v(tests.rawHOStrMultiple, HitObject::TYPE::RAW, 4);
     QVERIFY(ho_v == tests.hoMultiple);
 }
-void reamber_base_test::TPVRawLoading() {
-    TimingPointV tpV;
-    tpV.loadRawTimingPoint(tests.rawTPStrMultiple);
-
+void reamber_base_test::tpVRawLoading() {
+    TimingPointV tpV(tests.rawTPStrMultiple);
     QVERIFY(tpV == tests.tpMultiple);
 }
-void reamber_base_test::HOVEditorLoading() {
-    HitObjectV ho_v;
-    ho_v.loadEditorHitObject(tests.eHOStrMultiple, 4);
+void reamber_base_test::hoVEditorLoading() {
+    HitObjectV ho_v(tests.eHOStrMultiple, HitObject::TYPE::EDITOR, 4);
 
     QVERIFY(ho_v == tests.eHOMutliple);
 }
 
 // FOBO: First Object By Offset
 // LOBO: Last  Object By Offset
-void reamber_base_test::foboHO()
-{
-    QVERIFY(
-                tests.hoMultiple[0] == // Expect the first object
-            tests.hoMultiple.getFirstObjectByOffset()
-            );
+void reamber_base_test::foboHO(){
+    QVERIFY(tests.hoMultiple[0] == // Expect the first object
+            tests.hoMultiple.getFirstObjectByOffset());
 }
-void reamber_base_test::foboTP()
-{
-    QVERIFY(
-                tests.tpMultiple[0] == // Expect the first object
-            tests.tpMultiple.getFirstObjectByOffset()
-            );
+void reamber_base_test::foboTP(){
+    QVERIFY(tests.tpMultiple[0] == // Expect the first object
+            tests.tpMultiple.getFirstObjectByOffset());
 }
-void reamber_base_test::loboHO()
-{
-    QVERIFY(
-                tests.hoMultiple[2] == // Expect the first object
-            tests.hoMultiple.getLastObjectByOffset()
-            );
+void reamber_base_test::loboHO(){
+    QVERIFY(tests.hoMultiple[2] == // Expect the first object
+            tests.hoMultiple.getLastObjectByOffset());
 }
-void reamber_base_test::loboTP()
-{
-    QVERIFY(
-                tests.tpMultiple[2] == // Expect the first object
-            tests.tpMultiple.getLastObjectByOffset()
-            );
+void reamber_base_test::loboTP(){
+    QVERIFY(tests.tpMultiple[2] == // Expect the first object
+            tests.tpMultiple.getLastObjectByOffset());
 }
 
 void reamber_base_test::getColumnV() {
@@ -289,7 +270,7 @@ void reamber_base_test::sortByOffsetTP() {
     QVERIFY(tpV == tpVSortDesc);
 }
 
-void reamber_base_test::TPVMultiply() {
+void reamber_base_test::tpVMultiply() {
     //        [0] [1] [2] [3] [4]
     // SELF :  1   1           1
     // EFF  :  1       1   1
@@ -316,7 +297,7 @@ void reamber_base_test::TPVMultiply() {
 
     QVERIFY(tpV.getStringRawV() == expected);
 }
-void reamber_base_test::TPVGetAve() {
+void reamber_base_test::tpVGetAve() {
     // SV
     TimingPointV tpV = TimingPointV(3);
     tpV[0].loadParameters(0, 1.5, false);
@@ -343,7 +324,7 @@ void reamber_base_test::TPVGetAve() {
     QVERIFY(125.0 == tpV.getAverageBpmValue());
 }
 
-void reamber_base_test::TPVArithmetic()
+void reamber_base_test::tpVArithmetic()
 {
     // +
     TimingPointV tpV = TimingPointV(3);
@@ -353,9 +334,9 @@ void reamber_base_test::TPVArithmetic()
 
     tpV += 2;
 
-    for (auto tp : tpV) {
-        qDebug() << tp.getStringRaw().toStdString().c_str();
-    }
+//    for (auto tp : tpV) {
+//        qDebug() << tp.getStringRaw().toStdString().c_str();
+//    }
 
     QVERIFY(true);
 }
@@ -670,9 +651,7 @@ void reamber_base_test::libCopyAbsdiffDelay() {
 }
 void reamber_base_test::libNormalize() {
     auto normalized = algorithm::normalize(tests.tpMultiple, 200, false);
-    QVector<QString> expected = {
-        "0,-200,4,1,1,50,0,0"
-    };
+    QVector<QString> expected = { "0,-200,4,1,1,50,0,0" };
 
     QVERIFY(normalized.getStringRawV() == expected);
 }
@@ -686,7 +665,7 @@ void reamber_base_test::libCreateStutterRelative() {
         "350,-25,4,0,0,25,0,0",
         "400,-400,4,0,0,25,0,0",
         "600,-100,4,0,0,25,0,0"
-    };    for (auto s : tpV.getStringRawV())qDebug () << s;
+    };
 
     QVERIFY(tpV.getStringRawV() == expected);
 
@@ -774,13 +753,10 @@ void reamber_base_test::libExtractNth() {
 
     QVERIFY(ho_v.getStringRawV() == expected);
 
-
     // TP
     auto tpV = algorithm::extractNth<TimingPoint>(tests.pTPMultiple, 2, 1);
 
-    expected = {
-        "1000,-50,4,1,1,50,0,1"
-    };
+    expected = { "1000,-50,4,1,1,50,0,1" };
 
     QVERIFY(tpV.getStringRawV() == expected);
 }
